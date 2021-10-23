@@ -22,6 +22,10 @@ type scratchInputVal []interface{}
 
 func (s *scratchInputVal) mustBeInput() {}
 
+func NewScratchDefaultValue(val ScratchInput, _default ScratchInput) ScratchInput {
+	return &scratchInputVal{3, val, _default}
+}
+
 func NewScratchFloat(val float64) ScratchInput {
 	return &scratchInputVal{4, val}
 }
