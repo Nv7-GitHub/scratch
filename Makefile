@@ -5,3 +5,9 @@ format:
 
 build:
 	zip -r Project.sb3 Project
+
+download:
+	mv ~/Downloads/Project.sb3 ./Project.zip
+	rm -rf Project
+	unzip Project.zip -d Project
+	rm Project.zip
