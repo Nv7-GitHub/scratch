@@ -4,8 +4,8 @@ type ScratchBlock struct {
 	Opcode   string                  `json:"opcode"`
 	Next     *string                 `json:"next"`   // string or null, id of next
 	Parent   *string                 `json:"parent"` // string or null - from scratch wiki: If the block is a stack block and is preceded, this is the ID of the preceding block. If the block is the first stack block in a C mouth, this is the ID of the C block. If the block is an input to another block, this is the ID of that other block. Otherwise it is null.
-	Inputs   map[string]ScratchInput `json:"inputs"` // map[inputName]InputValue
-	Fields   map[string][]string     `json:"fields"` // Not sure what this is, empty from what I've seen
+	Inputs   map[string]ScratchInput `json:"inputs"` // map[inputName]InputValue, use Shadow for constand and Obscured for block in it
+	Fields   map[string]ScratchField `json:"fields"` // map[fieldName]FieldValue
 	Shadow   bool                    `json:"shadow"`
 	TopLevel bool                    `json:"topLevel"` // False if the block has a parent and true otherwise.
 
@@ -14,51 +14,82 @@ type ScratchBlock struct {
 	Comment *string `json:"comment,omitempty"` // ID of comment if it has one
 }
 
-type ScratchInput interface {
+type ScratchInput []interface{}
+
+func NewScratchInputShadow(val ScratchValue) ScratchValue {
+	return &scratchInputVal{1, val}
+}
+
+func NewScratchInputNoShadow(val ScratchValue) ScratchValue {
+	return &scratchInputVal{2, val}
+}
+
+func NewScratchInputObscured(val ScratchValue, below ScratchValue) ScratchValue {
+	return &scratchInputVal{3, val, below}
+}
+
+type ScratchValue interface {
 	mustBeInput()
 }
 
+type scratchInputBlock string
+
+func (s *scratchInputBlock) mustBeInput() {}
+
 type scratchInputVal []interface{}
+
+func NewScratchBlockInput(id string) ScratchValue {
+	blk := scratchInputBlock(id)
+	return &blk
+}
 
 func (s *scratchInputVal) mustBeInput() {}
 
-func NewScratchDefaultValue(val ScratchInput, _default ScratchInput) ScratchInput {
-	return &scratchInputVal{3, val, _default}
-}
-
-func NewScratchFloat(val float64) ScratchInput {
+func NewScratchFloat(val float64) ScratchValue {
 	return &scratchInputVal{4, val}
 }
 
-func NewScratchPosFloat(val float64) ScratchInput {
+func NewScratchPosFloat(val float64) ScratchValue {
 	return &scratchInputVal{5, val}
 }
 
-func NewScratchPosInt(val int) ScratchInput {
+func NewScratchPosInt(val int) ScratchValue {
 	return &scratchInputVal{6, val}
 }
 
-func NewScratchInt(val int) ScratchInput {
+func NewScratchInt(val int) ScratchValue {
 	return &scratchInputVal{7, val}
 }
 
-func NewScratchAngle(val int) ScratchInput {
+func NewScratchAngle(val int) ScratchValue {
 	return &scratchInputVal{8, val}
 }
 
 // NOTE: Requires with #
-func NewScratchColor(hex string) ScratchInput {
+func NewScratchColor(hex string) ScratchValue {
 	return &scratchInputVal{9, hex}
 }
 
-func NewScratchString(val string) ScratchInput {
+func NewScratchString(val string) ScratchValue {
 	return &scratchInputVal{10, val}
 }
 
-func NewScratchBroadcast(name, id string) ScratchInput {
+func NewScratchBroadcast(name, id string) ScratchValue {
 	return &scratchInputVal{11, name, id}
 }
 
-func NewScratchVariable(name, id string) ScratchInput {
+func NewScratchVariable(name, id string) ScratchValue {
 	return &scratchInputVal{12, name, id}
+}
+
+type ScratchField interface {
+	mustBeInputField()
+}
+
+type scratchInputField []interface{}
+
+func (s *scratchInputField) mustBeInputField() {}
+
+func NewScratchValueFieldVariable(name, id string) ScratchField {
+	return &scratchInputField{name, id}
 }
