@@ -25,6 +25,7 @@ type Stage struct {
 
 func (s *Stage) Build() *types.ScratchStage {
 	basic := s.BasicSprite.Build()
+	basic.IsStage = true
 
 	broadcasts := make(map[string]string)
 	for i, broadcast := range s.Broadcasts {

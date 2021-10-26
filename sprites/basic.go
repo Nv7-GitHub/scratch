@@ -84,6 +84,7 @@ func (b *BasicSprite) Build() types.ScratchTargetBase {
 	}
 
 	return types.ScratchTargetBase{
+		IsStage:    false,
 		Name:       b.Name,
 		Variables:  vars,
 		Lists:      lists,
