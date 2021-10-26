@@ -36,10 +36,10 @@ type ScratchSprite struct {
 type ScratchVariableValue []interface{} // name (string), value (int, string, list, etc.)
 
 type ScratchAsset struct {
-	AssetID    string `json:"assetId"`
+	AssetID    string `json:"assetId"` // Name of file without extension
 	Name       string `json:"name"`
-	Md5Ext     string `json:"md5ext"`
-	DataFormat string `json:"dataFormat"` // `svg` if costume, `wav` if sound
+	Md5Ext     string `json:"md5ext"`     // AssetID + extension
+	DataFormat string `json:"dataFormat"` // `svg` if costume, `wav` if sound, `png` if image
 }
 
 type ScratchCostume struct {
