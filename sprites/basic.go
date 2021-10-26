@@ -69,7 +69,7 @@ func (b *BasicSprite) Build() types.ScratchTargetBase {
 		}
 	}
 
-	sounds := make([]types.ScratchSound, len(b.Costumes))
+	sounds := make([]types.ScratchSound, len(b.Sounds))
 	for i, sound := range b.Sounds {
 		sounds[i] = types.ScratchSound{
 			ScratchAsset: types.ScratchAsset{
