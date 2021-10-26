@@ -1,6 +1,10 @@
 package types
 
-type ScratchTarget struct {
+type ScratchTarget interface {
+	mustEmbedScratchTargetBase()
+}
+
+type ScratchTargetBase struct {
 	IsStage        bool                            `json:"isStage"`
 	Name           string                          `json:"name"`
 	Variables      map[string]ScratchVariableValue `json:"variables"`
@@ -14,15 +18,17 @@ type ScratchTarget struct {
 	Volume         int                             `json:"volume"`
 }
 
+func (s *ScratchTargetBase) mustEmbedScratchTargetBase() {}
+
 type ScratchStage struct {
-	ScratchTarget
+	ScratchTargetBase
 
 	TextToSpeechLanguage *string `json:"textToSpeechLanguage"` // string or null
 	VideoState           string  `json:"videoState"`           // seems to be "on" always
 }
 
 type ScratchSprite struct {
-	ScratchTarget
+	ScratchTargetBase
 
 	LayerOrder    int    `json:"layerOrder"` // Layer on screen
 	X             int    `json:"x"`
