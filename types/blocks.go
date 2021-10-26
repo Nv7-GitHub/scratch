@@ -16,16 +16,20 @@ type ScratchBlock struct {
 
 type ScratchInput []interface{}
 
-func NewScratchInputShadow(val ScratchValue) ScratchValue {
-	return &scratchInputVal{1, val}
+func NewScratchInputShadow(val ScratchValue) ScratchInput {
+	return ScratchInput{1, val}
 }
 
-func NewScratchInputNoShadow(val ScratchValue) ScratchValue {
-	return &scratchInputVal{2, val}
+func NewScratchInputNoShadow(val ScratchValue) ScratchInput {
+	return ScratchInput{2, val}
 }
 
-func NewScratchInputObscured(val ScratchValue, below ScratchValue) ScratchValue {
-	return &scratchInputVal{3, val, below}
+func NewScratchInputObscured(val ScratchValue, below ScratchValue) ScratchInput {
+	return ScratchInput{3, val, below}
+}
+
+func NewScratchInputStack(firstId string) ScratchInput {
+	return ScratchInput{2, firstId}
 }
 
 type ScratchValue interface {
