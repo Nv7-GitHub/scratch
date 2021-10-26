@@ -5,8 +5,9 @@ import (
 	"github.com/Nv7-Github/scratch/types"
 )
 
-func newBasicSprite() *BasicSprite {
+func newBasicSprite(name string) *BasicSprite {
 	return &BasicSprite{
+		Name:      name,
 		Variables: make(map[string]*Variable),
 		Lists:     make(map[string]*List),
 		Costumes:  make([]*Costume, 0),

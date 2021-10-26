@@ -4,7 +4,7 @@ import "github.com/Nv7-Github/scratch/types"
 
 func NewStage() *Stage {
 	return &Stage{
-		BasicSprite: newBasicSprite(),
+		BasicSprite: newBasicSprite("Stage"),
 
 		VideoState:           "on",
 		TextToSpeechLanguage: nil,
