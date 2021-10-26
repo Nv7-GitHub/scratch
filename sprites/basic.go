@@ -60,7 +60,7 @@ func (b *BasicSprite) Build() types.ScratchTargetBase {
 			ScratchAsset: types.ScratchAsset{
 				AssetID:    costume.id,
 				Name:       costume.Name,
-				Md5Ext:     costume.id + costume.extension,
+				Md5Ext:     costume.id + "." + costume.extension,
 				DataFormat: costume.extension,
 			},
 			BitmapResolution: 1,
@@ -75,7 +75,7 @@ func (b *BasicSprite) Build() types.ScratchTargetBase {
 			ScratchAsset: types.ScratchAsset{
 				AssetID:    sound.id,
 				Name:       sound.Name,
-				Md5Ext:     sound.id + "wav",
+				Md5Ext:     sound.id + "." + "wav",
 				DataFormat: "wav",
 			},
 			Format:      "",
