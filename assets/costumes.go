@@ -8,6 +8,7 @@ import (
 	"math"
 
 	"github.com/Nv7-Github/scratch/types"
+	"github.com/nfnt/resize"
 )
 
 var costumes = make([]*Costume, 0)
@@ -66,15 +67,9 @@ func GetCostume(name string, data io.Reader, format CostumeFormat) *Costume {
 }
 
 func GetCostumeFromImage(name string, img image.Image) (*Costume, error) {
-	// Get buf
-	buf := bytes.NewBuffer(nil)
-	err := png.Encode(buf, img)
-	if err != nil {
-		return nil, err
-	}
-
-	diffX := math.Floor(float64(img.Bounds().Dx()) / types.ScratchResolutionX)
-	diffY := math.Floor(float64(img.Bounds().Dy()) / types.ScratchResolutionY)
+	// Calculate ratios and center
+	diffX := math.Ceil(float64(img.Bounds().Dx()) / types.ScratchResolutionX)
+	diffY := math.Ceil(float64(img.Bounds().Dy()) / types.ScratchResolutionY)
 	diff := 1
 	rotX := img.Bounds().Dx() / 2
 	rotY := img.Bounds().Dy() / 2
@@ -82,12 +77,24 @@ func GetCostumeFromImage(name string, img image.Image) (*Costume, error) {
 		if diffX > diffY {
 			diff = int(diffX)
 			rotX = types.ScratchResolutionX
-			rotY = int(float64(diffY)/float64(diffX)) * types.ScratchResolutionX
+			rotY = int(float64(img.Bounds().Dy())/float64(img.Bounds().Dx())) * types.ScratchResolutionX
 		} else {
 			diff = int(diffY)
-			rotX = int(float64(diffX)/float64(diffY)) * types.ScratchResolutionY
+			rotX = int(float64(img.Bounds().Dx())/float64(img.Bounds().Dy())) * types.ScratchResolutionY
 			rotY = types.ScratchResolutionY
 		}
+	}
+
+	if diff > types.MaxBitmapResolution {
+		diff = types.MaxBitmapResolution
+		img = resize.Thumbnail(types.ScratchResolutionX*types.MaxBitmapResolution, types.ScratchResolutionY*types.MaxBitmapResolution, img, resize.Lanczos3)
+	}
+
+	// Get buf
+	buf := bytes.NewBuffer(nil)
+	err := png.Encode(buf, img)
+	if err != nil {
+		return nil, err
 	}
 
 	costume := GetCostume(name, buf, CostumeFormatPNG)
