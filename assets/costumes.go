@@ -68,6 +68,12 @@ func GetCostume(name string, data io.Reader, format CostumeFormat) *Costume {
 
 func GetCostumeFromImage(name string, img image.Image) (*Costume, error) {
 	// Calculate ratios and center
+	// The way it works is:
+	// 1. Calculate the ratio of the image's X and Y to the scratch resolution (480x360)
+	// 2. If the ratio on the X is biggest, then the center X is max X and center Y is (ratio of Y to X) * max Y
+	// 3. If the ratio on the Y is biggest, then the center X is (ratio of X to Y) * max X and center Y is max Y
+	// Example: If you had a 2048x2048 image, the Y ratio would be larger, and the center would be (360, 360)
+	// 4. If the image is over 2x the max scratch resolution, resize it to fit within 2x that resolution and set the DPI (BitmapResolution) to 2
 	diffX := math.Ceil(float64(img.Bounds().Dx()) / types.ScratchResolutionX)
 	diffY := math.Ceil(float64(img.Bounds().Dy()) / types.ScratchResolutionY)
 	diff := 1
