@@ -1,6 +1,9 @@
 package scratch
 
 import (
+	"encoding/json"
+
+	"github.com/Nv7-Github/scratch/assets"
 	"github.com/Nv7-Github/scratch/sprites"
 	"github.com/Nv7-Github/scratch/types"
 )
@@ -27,4 +30,20 @@ func Build() types.ScratchProject {
 		Metadata:   Metadata,
 		Extensions: exts,
 	}
+}
+
+func Save(fs types.FS) error {
+	err := assets.Save(fs)
+	if err != nil {
+		return err
+	}
+
+	proj, err := fs.Create("project.json")
+	if err != nil {
+		return err
+	}
+
+	enc := json.NewEncoder(proj)
+	data := Build()
+	return enc.Encode(data)
 }

@@ -8,7 +8,7 @@ import (
 
 type empty struct{}
 
-const length = 16
+const length = 32
 
 var used = make(map[string]empty)
 

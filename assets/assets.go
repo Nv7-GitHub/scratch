@@ -2,13 +2,11 @@ package assets
 
 import (
 	"io"
+
+	"github.com/Nv7-Github/scratch/types"
 )
 
-type FS interface {
-	Create(string) (io.Writer, error)
-}
-
-func Save(fs FS) error {
+func Save(fs types.FS) error {
 	for _, costume := range costumes {
 		f, err := fs.Create(costume.Filename())
 		if err != nil {

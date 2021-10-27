@@ -31,6 +31,14 @@ type BasicSprite struct {
 	comments map[string]string
 }
 
+func (b *BasicSprite) AddCostume(costume *assets.Costume) {
+	b.Costumes = append(b.Costumes, costume)
+}
+
+func (b *BasicSprite) AddSound(sound *assets.Sound) {
+	b.Sounds = append(b.Sounds, sound)
+}
+
 func (b *BasicSprite) Build() types.ScratchTargetBase {
 	vars := make(map[string]types.ScratchVariableValue)
 	for _, v := range b.Variables {
