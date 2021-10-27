@@ -47,8 +47,10 @@ func (b *BasicSprite) AddVariable(name string, initialValue interface{}) *Variab
 	variable := &Variable{
 		Name:         name,
 		InitialValue: initialValue,
+		Local:        true,
 
-		id: types.GetRandomString(),
+		id:         types.GetRandomString(),
+		spriteName: b.Name,
 	}
 	b.Variables[name] = variable
 
@@ -59,8 +61,10 @@ func (b *BasicSprite) AddList(name string, initialValues []interface{}) *List {
 	list := &List{
 		Name:          name,
 		InitialValues: initialValues,
+		Local:         true,
 
-		id: types.GetRandomString(),
+		id:         types.GetRandomString(),
+		spriteName: b.Name,
 	}
 	b.Lists[name] = list
 

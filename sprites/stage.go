@@ -42,3 +42,19 @@ func (s *Stage) Build() *types.ScratchStage {
 		TextToSpeechLanguage: s.TextToSpeechLanguage,
 	}
 }
+
+func (s *Stage) AddVariable(name string, initialValue interface{}) *Variable {
+	v := s.BasicSprite.AddVariable(name, initialValue)
+	(*v).Local = false
+	(*v).spriteName = ""
+
+	return v
+}
+
+func (s *Stage) AddList(name string, initialValues []interface{}) *List {
+	v := s.BasicSprite.AddList(name, initialValues)
+	(*v).Local = false
+	(*v).spriteName = ""
+
+	return v
+}

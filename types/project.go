@@ -30,7 +30,7 @@ type ScratchMonitor struct {
 	Visible bool `json:"visible"`
 
 	// Slider
-	SliderMin  int  `json:"sliderMin"`
-	SliderMax  int  `json:"sliderMax"`
+	SliderMin  *int `json:"sliderMin,omitempty"`
+	SliderMax  *int `json:"sliderMax,omitempty"`
 	IsDiscrete bool `json:"isDiscrete"` // Does slider allow integer values?
 }

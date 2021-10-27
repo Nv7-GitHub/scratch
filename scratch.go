@@ -25,9 +25,13 @@ func Build() types.ScratchProject {
 	for i, ext := range Extensions {
 		exts[i] = extensionNames[ext]
 	}
+	monitors := make([]types.ScratchMonitor, len(Monitors))
+	for i, m := range Monitors {
+		monitors[i] = m.Build()
+	}
 	return types.ScratchProject{
 		Targets:    []types.ScratchTarget{Stage.Build()},
-		Monitors:   []types.ScratchMonitor{},
+		Monitors:   monitors,
 		Metadata:   Metadata,
 		Extensions: exts,
 	}
@@ -52,6 +56,7 @@ func Save(fs types.FS) error {
 func Clear() {
 	Stage = sprites.NewStage()
 	Extensions = make([]Extension, 0)
+	Monitors = make([]Monitor, 0)
 	Metadata = types.ScratchMetadata{
 		SemVer: "3.0.0",
 		VM:     "0.2.0-prerelease.20211015091140",                                                                                          // VM at time of making this
