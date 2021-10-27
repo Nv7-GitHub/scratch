@@ -26,6 +26,7 @@ func AddMonitor(v *sprites.Variable, mode MonitorMode) *VariableMonitor {
 		Variable:  v,
 		Mode:      mode,
 		SliderMax: 100,
+		visible:   true,
 	}
 	Monitors = append(Monitors, m)
 	return m
@@ -33,7 +34,8 @@ func AddMonitor(v *sprites.Variable, mode MonitorMode) *VariableMonitor {
 
 func AddListMonitor(v *sprites.List) *ListMonitor {
 	m := &ListMonitor{
-		List: v,
+		List:    v,
+		visible: true,
 	}
 	Monitors = append(Monitors, m)
 	return m
@@ -85,6 +87,7 @@ func (v *VariableMonitor) Build() types.ScratchMonitor {
 		Mode:   monitorModeNames[v.Mode],
 		Opcode: "data_variable",
 		Params: map[string]string{"VARIABLE": v.Variable.Name},
+		Value:  v.Variable.InitialValue,
 
 		X:       v.X,
 		Y:       v.Y,
@@ -109,6 +112,7 @@ func (l *ListMonitor) Build() types.ScratchMonitor {
 		Mode:   "list",
 		Opcode: "data_listcontents",
 		Params: map[string]string{"LIST": l.List.Name},
+		Value:  l.List.InitialValues,
 
 		X:       l.X,
 		Y:       l.Y,

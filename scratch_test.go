@@ -65,10 +65,14 @@ func TestVariables(t *testing.T) {
 	addBlankBg()
 
 	variable := Stage.AddVariable("variable", "This is a variable.")
-	AddMonitor(variable, MonitorDefault)
+	variableMonitor := AddMonitor(variable, MonitorDefault)
+	variableMonitor.X = 5
+	variableMonitor.Y = 5
 
 	list := Stage.AddList("list", []interface{}{"This is a list.", "It has multiple values.", "It has initial values."})
-	AddListMonitor(list)
+	listMonitor := AddListMonitor(list)
+	listMonitor.X = 5
+	listMonitor.Y = 33
 
 	saveProject(t, "testdata/Variables.sb3")
 }
