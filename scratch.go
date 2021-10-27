@@ -11,7 +11,6 @@ import (
 
 var Stage *sprites.Stage
 
-// No monitors support
 // No target support
 var Extensions []Extension
 var Metadata types.ScratchMetadata
