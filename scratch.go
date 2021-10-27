@@ -32,6 +32,7 @@ func (p *Project) Build() types.ScratchProject {
 	}
 	return types.ScratchProject{
 		Targets:    []types.ScratchTarget{p.Stage.Build()},
+		Monitors:   []types.ScratchMonitor{},
 		Metadata:   p.Metadata,
 		Extensions: exts,
 	}

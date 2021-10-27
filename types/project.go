@@ -4,7 +4,7 @@ type ScratchProject struct {
 	Targets    []ScratchTarget  `json:"targets"`
 	Monitors   []ScratchMonitor `json:"monitors"`
 	Extensions []string         `json:"extensions"`
-	Metadata   ScratchMetadata  `json:"metadata"`
+	Metadata   ScratchMetadata  `json:"meta"`
 }
 
 type ScratchMetadata struct {

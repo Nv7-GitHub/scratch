@@ -4,6 +4,7 @@ format:
 	mv Project/formatted.json Project/project.json
 
 build:
+	rm -f Project.sb3
 	zip -r Project.sb3 Project
 
 download:
