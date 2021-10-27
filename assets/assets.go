@@ -8,7 +8,7 @@ import (
 
 func Save(fs types.FS) error {
 	for _, costume := range costumes {
-		f, err := fs.Create(costume.Filename())
+		f, err := fs.Create(costume.filename())
 		if err != nil {
 			return err
 		}
@@ -20,7 +20,7 @@ func Save(fs types.FS) error {
 	}
 
 	for _, sound := range sounds {
-		f, err := fs.Create(sound.Filename())
+		f, err := fs.Create(sound.filename())
 		if err != nil {
 			return err
 		}

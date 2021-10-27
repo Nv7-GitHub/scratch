@@ -1,7 +1,11 @@
 package assets
 
 import (
+	"bytes"
+	"image"
+	"image/png"
 	"io"
+	"math"
 
 	"github.com/Nv7-Github/scratch/types"
 )
@@ -9,25 +13,32 @@ import (
 var costumes = make([]*Costume, 0)
 
 type Costume struct {
-	Name            string
-	RotationCenterX int
-	RotationCenterY int
+	Name             string
+	RotationCenterX  int
+	RotationCenterY  int
+	BitmapResolution int
 
 	id     string
 	format string
 	data   io.Reader
 }
 
-func (c *Costume) ScratchID() string {
-	return c.id
-}
-
-func (c *Costume) ScratchFormat() string {
-	return c.format
-}
-
-func (c *Costume) Filename() string {
+func (c *Costume) filename() string {
 	return c.id + "." + c.format
+}
+
+func (c *Costume) Build() types.ScratchCostume {
+	return types.ScratchCostume{
+		ScratchAsset: types.ScratchAsset{
+			AssetID:    c.id,
+			Name:       c.Name,
+			Md5Ext:     c.filename(),
+			DataFormat: c.format,
+		},
+		BitmapResolution: c.BitmapResolution,
+		RotationCenterX:  c.RotationCenterX,
+		RotationCenterY:  c.RotationCenterY,
+	}
 }
 
 type CostumeFormat int
@@ -52,4 +63,36 @@ func GetCostume(name string, data io.Reader, format CostumeFormat) *Costume {
 	costumes = append(costumes, costume)
 
 	return costume
+}
+
+func GetCostumeFromImage(name string, img image.Image) (*Costume, error) {
+	// Get buf
+	buf := bytes.NewBuffer(nil)
+	err := png.Encode(buf, img)
+	if err != nil {
+		return nil, err
+	}
+
+	diffX := math.Floor(float64(img.Bounds().Dx()) / types.ScratchResolutionX)
+	diffY := math.Floor(float64(img.Bounds().Dy()) / types.ScratchResolutionY)
+	diff := 1
+	rotX := img.Bounds().Dx() / 2
+	rotY := img.Bounds().Dy() / 2
+	if diffX > 1 || diffY > 1 {
+		if diffX > diffY {
+			diff = int(diffX)
+			rotX = types.ScratchResolutionX
+			rotY = int(float64(diffY)/float64(diffX)) * types.ScratchResolutionX
+		} else {
+			diff = int(diffY)
+			rotX = int(float64(diffX)/float64(diffY)) * types.ScratchResolutionY
+			rotY = types.ScratchResolutionY
+		}
+	}
+
+	costume := GetCostume(name, buf, CostumeFormatPNG)
+	costume.BitmapResolution = diff
+	costume.RotationCenterX = rotX
+	costume.RotationCenterY = rotY
+	return costume, nil
 }

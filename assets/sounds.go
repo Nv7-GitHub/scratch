@@ -17,24 +17,22 @@ type Sound struct {
 	data        io.Reader
 }
 
-func (s *Sound) Filename() string {
-	return s.id + "." + s.Format()
+func (s *Sound) filename() string {
+	return s.id + ".wav"
 }
 
-func (s *Sound) Format() string {
-	return "wav"
-}
-
-func (s *Sound) Rate() int {
-	return s.rate
-}
-
-func (s *Sound) SampleCount() int {
-	return s.sampleCount
-}
-
-func (s *Sound) ScratchID() string {
-	return s.id
+func (s *Sound) Build() types.ScratchSound {
+	return types.ScratchSound{
+		ScratchAsset: types.ScratchAsset{
+			AssetID:    s.id,
+			Name:       s.Name,
+			Md5Ext:     s.filename(),
+			DataFormat: "wav",
+		},
+		Format:      "",
+		Rate:        s.rate,
+		SampleCount: s.sampleCount,
+	}
 }
 
 func GetSound(name string, data io.Reader, rate int, sampleCount int) *Sound {

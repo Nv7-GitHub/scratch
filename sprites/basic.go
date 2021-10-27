@@ -65,32 +65,12 @@ func (b *BasicSprite) Build() types.ScratchTargetBase {
 
 	costumes := make([]types.ScratchCostume, len(b.Costumes))
 	for i, costume := range b.Costumes {
-		costumes[i] = types.ScratchCostume{
-			ScratchAsset: types.ScratchAsset{
-				AssetID:    costume.ScratchID(),
-				Name:       costume.Name,
-				Md5Ext:     costume.Filename(),
-				DataFormat: costume.ScratchFormat(),
-			},
-			BitmapResolution: 1,
-			RotationCenterX:  costume.RotationCenterX,
-			RotationCenterY:  costume.RotationCenterY,
-		}
+		costumes[i] = costume.Build()
 	}
 
 	sounds := make([]types.ScratchSound, len(b.Sounds))
 	for i, sound := range b.Sounds {
-		sounds[i] = types.ScratchSound{
-			ScratchAsset: types.ScratchAsset{
-				AssetID:    sound.ScratchID(),
-				Name:       sound.Name,
-				Md5Ext:     sound.Filename(),
-				DataFormat: "wav",
-			},
-			Format:      "",
-			Rate:        sound.Rate(),
-			SampleCount: sound.SampleCount(),
-		}
+		sounds[i] = sound.Build()
 	}
 
 	return types.ScratchTargetBase{
