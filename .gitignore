@@ -19,3 +19,4 @@ Project/*
 Project.sb3
 project*.json
 formatted.json
+testdata/*.sb3

@@ -11,7 +11,7 @@ import (
 	"github.com/nfnt/resize"
 )
 
-var costumes = make([]*Costume, 0)
+var costumes []*Costume
 
 type Costume struct {
 	Name             string

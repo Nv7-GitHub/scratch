@@ -6,7 +6,7 @@ import (
 	"github.com/Nv7-Github/scratch/types"
 )
 
-var sounds = make([]*Sound, 0)
+var sounds []*Sound
 
 type Sound struct {
 	Name string

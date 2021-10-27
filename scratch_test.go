@@ -9,14 +9,12 @@ import (
 	"github.com/Nv7-Github/scratch/assets"
 )
 
-func TestBasic(t *testing.T) {
-	out, err := os.Create("Project.sb3")
+func saveProject(t *testing.T, name string) {
+	out, err := os.Create(name)
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer out.Close()
-
-	Stage.AddCostume(assets.CostumeBlank("background1"))
 
 	zip := zip.NewWriter(out)
 	defer zip.Close()
@@ -27,12 +25,20 @@ func TestBasic(t *testing.T) {
 	}
 }
 
+func addBlankBg() {
+	Stage.AddCostume(assets.CostumeBlank("background1"))
+}
+
+func TestBasic(t *testing.T) {
+	Clear()
+
+	addBlankBg()
+
+	saveProject(t, "testdata/Basic.sb3")
+}
+
 func TestImage(t *testing.T) {
-	out, err := os.Create("Project.sb3")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer out.Close()
+	Clear()
 
 	// Load image
 	imgF, err := os.Open("testdata/octocat.png")
@@ -51,11 +57,15 @@ func TestImage(t *testing.T) {
 	}
 	Stage.AddCostume(costume)
 
-	zip := zip.NewWriter(out)
-	defer zip.Close()
+	saveProject(t, "testdata/Image.sb3")
+}
 
-	err = Save(zip)
-	if err != nil {
-		t.Fatal(err)
-	}
+func TestVariables(t *testing.T) {
+	Clear()
+	addBlankBg()
+
+	Stage.AddVariable("variable", "This is a variable.")
+	Stage.AddList("list", []interface{}{"This is a list.", "It has multiple values.", "It has initial values."})
+
+	saveProject(t, "testdata/Variables.sb3")
 }

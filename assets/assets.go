@@ -33,3 +33,8 @@ func Save(fs types.FS) error {
 
 	return nil
 }
+
+func Clear() {
+	costumes = make([]*Costume, 0)
+	sounds = make([]*Sound, 0)
+}

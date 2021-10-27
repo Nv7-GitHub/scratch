@@ -19,8 +19,8 @@ func newBasicSprite(name string) *BasicSprite {
 type BasicSprite struct {
 	Name string
 
-	Variables map[string]*Variable
-	Lists     map[string]*List
+	Variables map[string]*Variable // map[name]*Variable
+	Lists     map[string]*List     // map[name]*List
 
 	Costume  int
 	Costumes []*assets.Costume
@@ -39,69 +39,30 @@ func (b *BasicSprite) AddSound(sound *assets.Sound) {
 	b.Sounds = append(b.Sounds, sound)
 }
 
-func (b *BasicSprite) Build() types.ScratchTargetBase {
-	vars := make(map[string]types.ScratchVariableValue)
-	for _, v := range b.Variables {
-		vars[v.id] = types.ScratchVariableValue{v.Name, v.InitialValue}
-	}
-
-	lists := make(map[string]types.ScratchVariableValue)
-	for _, v := range b.Lists {
-		lists[v.id] = types.ScratchVariableValue{v.Name, v.InitialValues}
-	}
-
-	comments := make(map[string]types.ScratchComment)
-	for id, c := range b.comments {
-		comments[id] = types.ScratchComment{
-			BlockID:   id,
-			X:         0,
-			Y:         0,
-			Width:     0,
-			Height:    0,
-			Minimized: true,
-			Text:      c,
-		}
-	}
-
-	costumes := make([]types.ScratchCostume, len(b.Costumes))
-	for i, costume := range b.Costumes {
-		costumes[i] = costume.Build()
-	}
-
-	sounds := make([]types.ScratchSound, len(b.Sounds))
-	for i, sound := range b.Sounds {
-		sounds[i] = sound.Build()
-	}
-
-	return types.ScratchTargetBase{
-		IsStage:    false,
-		Name:       b.Name,
-		Variables:  vars,
-		Lists:      lists,
-		Broadcasts: make(map[string]string), // Empty everywhere but stage
-		// Blocks left for implementing sprite
-		Comments:       comments,
-		CurrentCostume: b.Costume,
-		Costumes:       costumes,
-		Sounds:         sounds,
-		Volume:         b.Volume,
-	}
-}
-
 func (b *BasicSprite) GetComment(block blocks.Block) string {
 	return b.comments[block.ScratchID()]
 }
 
-type Variable struct {
-	Name         string
-	InitialValue interface{}
+func (b *BasicSprite) AddVariable(name string, initialValue interface{}) *Variable {
+	variable := &Variable{
+		Name:         name,
+		InitialValue: initialValue,
 
-	id string
+		id: types.GetRandomString(),
+	}
+	b.Variables[name] = variable
+
+	return variable
 }
 
-type List struct {
-	Name          string
-	InitialValues []interface{}
+func (b *BasicSprite) AddList(name string, initialValues []interface{}) *List {
+	list := &List{
+		Name:          name,
+		InitialValues: initialValues,
 
-	id string
+		id: types.GetRandomString(),
+	}
+	b.Lists[name] = list
+
+	return list
 }

@@ -10,7 +10,7 @@ type empty struct{}
 
 const length = 32
 
-var used = make(map[string]empty)
+var used map[string]empty
 
 func GetRandomString() string {
 	exists := true
@@ -24,4 +24,8 @@ func GetRandomString() string {
 	}
 	used[txt] = empty{}
 	return txt
+}
+
+func Clear() {
+	used = make(map[string]empty)
 }
