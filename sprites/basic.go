@@ -1,6 +1,7 @@
 package sprites
 
 import (
+	"github.com/Nv7-Github/scratch/assets"
 	"github.com/Nv7-Github/scratch/blocks"
 	"github.com/Nv7-Github/scratch/types"
 )
@@ -10,8 +11,8 @@ func newBasicSprite(name string) *BasicSprite {
 		Name:      name,
 		Variables: make(map[string]*Variable),
 		Lists:     make(map[string]*List),
-		Costumes:  make([]*Costume, 0),
-		Sounds:    make([]*Sound, 0),
+		Costumes:  make([]*assets.Costume, 0),
+		Sounds:    make([]*assets.Sound, 0),
 	}
 }
 
@@ -22,9 +23,9 @@ type BasicSprite struct {
 	Lists     map[string]*List
 
 	Costume  int
-	Costumes []*Costume
+	Costumes []*assets.Costume
 
-	Sounds []*Sound
+	Sounds []*assets.Sound
 	Volume int
 
 	comments map[string]string
@@ -58,10 +59,10 @@ func (b *BasicSprite) Build() types.ScratchTargetBase {
 	for i, costume := range b.Costumes {
 		costumes[i] = types.ScratchCostume{
 			ScratchAsset: types.ScratchAsset{
-				AssetID:    costume.id,
+				AssetID:    costume.ScratchID(),
 				Name:       costume.Name,
-				Md5Ext:     costume.id + "." + costume.extension,
-				DataFormat: costume.extension,
+				Md5Ext:     costume.Filename(),
+				DataFormat: costume.ScratchFormat(),
 			},
 			BitmapResolution: 1,
 			RotationCenterX:  costume.RotationCenterX,
@@ -73,14 +74,14 @@ func (b *BasicSprite) Build() types.ScratchTargetBase {
 	for i, sound := range b.Sounds {
 		sounds[i] = types.ScratchSound{
 			ScratchAsset: types.ScratchAsset{
-				AssetID:    sound.id,
+				AssetID:    sound.ScratchID(),
 				Name:       sound.Name,
-				Md5Ext:     sound.id + "." + "wav",
+				Md5Ext:     sound.Filename(),
 				DataFormat: "wav",
 			},
 			Format:      "",
-			Rate:        sound.rate,
-			SampleCount: sound.sampleCount,
+			Rate:        sound.Rate(),
+			SampleCount: sound.SampleCount(),
 		}
 	}
 
@@ -115,21 +116,4 @@ type List struct {
 	InitialValues []interface{}
 
 	id string
-}
-
-type Costume struct {
-	id        string
-	extension string
-
-	Name            string
-	RotationCenterX int
-	RotationCenterY int
-}
-
-type Sound struct {
-	Name string
-
-	id          string
-	rate        int
-	sampleCount int
 }
