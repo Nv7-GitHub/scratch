@@ -3,7 +3,6 @@ package scratch
 import (
 	"archive/zip"
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/Nv7-Github/scratch/assets"
@@ -16,8 +15,7 @@ func TestBasic(t *testing.T) {
 	}
 	defer out.Close()
 
-	costume := assets.GetCostume("Stage", strings.NewReader(assets.BlankSvg), assets.CostumeFormatSVG)
-	Stage.AddCostume(costume)
+	Stage.AddCostume(assets.CostumeBlank("background1"))
 
 	zip := zip.NewWriter(out)
 	defer zip.Close()
