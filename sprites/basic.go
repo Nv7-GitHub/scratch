@@ -13,6 +13,8 @@ func newBasicSprite(name string) *BasicSprite {
 		Lists:     make(map[string]*List),
 		Costumes:  make([]*assets.Costume, 0),
 		Sounds:    make([]*assets.Sound, 0),
+
+		Volume: 100,
 	}
 }
 

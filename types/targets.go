@@ -37,6 +37,7 @@ type ScratchSprite struct {
 	Direction     int    `json:"direction"` // degrees
 	Draggable     bool   `json:"draggable"`
 	RotationStyle string `json:"rotationStyle"` // Scratch rotation style, can be `all around`, `left-right`, and `don't rotate`
+	Visible       bool   `json:"visible"`
 }
 
 type ScratchVariableValue []interface{} // name (string), value (int, string, list, etc.)

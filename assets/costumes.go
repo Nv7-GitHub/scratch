@@ -56,7 +56,9 @@ var costumeFormatNames = map[CostumeFormat]string{
 
 func GetCostume(name string, data io.Reader, format CostumeFormat) *Costume {
 	costume := &Costume{
-		Name:   name,
+		Name:             name,
+		BitmapResolution: 1,
+
 		data:   data,
 		format: costumeFormatNames[format],
 		id:     types.GetRandomString(),

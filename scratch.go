@@ -11,7 +11,6 @@ import (
 
 var Stage *sprites.Stage
 
-// No target support
 var Extensions []Extension
 var Metadata types.ScratchMetadata
 
@@ -28,8 +27,9 @@ func Build() types.ScratchProject {
 	for i, m := range Monitors {
 		monitors[i] = m.Build()
 	}
+	targets := sprites.Build()
 	return types.ScratchProject{
-		Targets:    []types.ScratchTarget{Stage.Build()},
+		Targets:    append([]types.ScratchTarget{Stage.Build()}, targets...),
 		Monitors:   monitors,
 		Metadata:   Metadata,
 		Extensions: exts,
@@ -64,4 +64,5 @@ func Clear() {
 	blocks.Clear()
 	assets.Clear()
 	types.Clear()
+	sprites.Clear()
 }

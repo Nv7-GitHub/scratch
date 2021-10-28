@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Nv7-Github/scratch/assets"
+	"github.com/Nv7-Github/scratch/sprites"
 )
 
 func saveProject(t *testing.T, name string) {
@@ -75,4 +76,16 @@ func TestVariables(t *testing.T) {
 	listMonitor.Y = 33
 
 	saveProject(t, "testdata/Variables.sb3")
+}
+
+func TestSprites(t *testing.T) {
+	Clear()
+
+	addBlankBg()
+
+	s := sprites.AddSprite("Sprite")
+	s.AddCostume(assets.CostumeScratchCat("cat"))
+	s.AddCostume(assets.CostumeScratchCatB("cat_b"))
+
+	saveProject(t, "testdata/Sprites.sb3")
 }
