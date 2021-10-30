@@ -1,6 +1,9 @@
 package sprites
 
-import "github.com/Nv7-Github/scratch/types"
+import (
+	"github.com/Nv7-Github/scratch/blocks"
+	"github.com/Nv7-Github/scratch/types"
+)
 
 func NewStage() *Stage {
 	return &Stage{
@@ -15,6 +18,8 @@ func NewStage() *Stage {
 
 type Stage struct {
 	*BasicSprite
+	*blocks.StageStacks
+	*blocks.StageBlocks
 
 	Broadcasts   []string
 	broadcastIDs []string
