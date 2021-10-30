@@ -32,16 +32,17 @@ func createProject(handler func(args ...interface{})) {
 	// Loop
 	loop := s.NewRepeat(10)
 	stack.Add(loop)
-	say = s.NewSayForTimeBlock("Hi", 0.5)
+	say = s.NewSayForTimeBlock("Hi", 0.1)
 	loop.Add(say)
 
 	// Global var & compare
 	global := Stage.AddVariable("onelessthantwo", "Not calculated yet!")
 	m = AddMonitor(global, MonitorDefault)
 	m.X = 5
-	m.Y = 10
+	m.Y = 33
 	lt := s.NewCompare(values.NewIntValue(1), values.NewIntValue(2), blocks.CompareLessThan)
 	set = s.NewSetVariable(global, values.NewBlockValue(lt))
+	stack.Add(lt)
 	stack.Add(set)
 
 	saveProject(handler, "testdata/Project.sb3")

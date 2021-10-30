@@ -16,6 +16,10 @@ type Block interface {
 	SetPrevID(string)
 }
 
+type BlockVal interface {
+	ScratchBlockVal()
+}
+
 type SimpleBlock interface {
 	Block
 	Build() types.ScratchBlock

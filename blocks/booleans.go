@@ -24,6 +24,8 @@ type Compare struct {
 	Val2 types.Value
 }
 
+func (c *Compare) ScratchBlockVal() {}
+
 func (c *Compare) Build() types.ScratchBlock {
 	return types.ScratchBlock{
 		Opcode: compareOperandNames[c.Op],

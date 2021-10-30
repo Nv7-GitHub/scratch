@@ -37,18 +37,25 @@ type StageStacks struct{ *Stacks }
 type SpriteStacks struct{ *Stacks }
 
 type BasicStack struct {
-	blocks []Block
-	X      int
-	Y      int
+	blocks    []Block
+	blockvals []Block
+	X         int
+	Y         int
 }
 
 func (b *BasicStack) Add(block Block) {
-	b.blocks = append(b.blocks, block)
+	_, ok := block.(BlockVal)
+	if ok {
+		b.blockvals = append(b.blockvals, block)
+	} else {
+		b.blocks = append(b.blocks, block)
+	}
 }
 
 func (b *BasicStack) Build(top types.ScratchBlock, topid string) map[string]types.ScratchBlock {
 	blocks := make(map[string]types.ScratchBlock)
 	for i, block := range b.blocks {
+		// Set IDs based on previous block if not operator
 		if i > 0 {
 			block.SetPrevID(b.blocks[i-1].ScratchID())
 		} else {
@@ -72,11 +79,15 @@ func (b *BasicStack) Build(top types.ScratchBlock, topid string) map[string]type
 		}
 	}
 	blocks[topid] = top
+	for _, val := range b.blockvals {
+		blocks[val.ScratchID()] = val.(SimpleBlock).Build()
+	}
 	return blocks
 }
 
 func newBasicStack() *BasicStack {
 	return &BasicStack{
-		blocks: make([]Block, 0),
+		blocks:    make([]Block, 0),
+		blockvals: make([]Block, 0),
 	}
 }
