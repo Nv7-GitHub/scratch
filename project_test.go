@@ -25,6 +25,12 @@ func createProject(handler func(args ...interface{})) {
 	set := s.NewSetVariable(variable, values.NewStringValue("This variable has been changed."))
 	stack.Add(set)
 
+	loop := s.NewRepeat(10)
+	stack.Add(loop)
+
+	say = s.NewSayForTimeBlock("Hi", 0.5)
+	loop.Add(say)
+
 	saveProject(handler, "testdata/Project.sb3")
 }
 func TestProject(t *testing.T) {

@@ -20,7 +20,7 @@ func NewScratchInputShadow(val ScratchValue) ScratchInput {
 	return ScratchInput{1, val}
 }
 
-func NewScratchInputNoShadow(val ScratchValue) ScratchInput {
+func NewScratchInputNoShadow(val string) ScratchInput {
 	return ScratchInput{2, val}
 }
 

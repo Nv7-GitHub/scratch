@@ -59,7 +59,17 @@ func (b *BasicStack) Build(top types.ScratchBlock, topid string) map[string]type
 		if i < len(b.blocks)-1 {
 			block.SetNextID(b.blocks[i+1].ScratchID())
 		}
-		blocks[block.ScratchID()] = block.Build()
+
+		simple, ok := block.(SimpleBlock)
+		if ok {
+			blocks[block.ScratchID()] = simple.Build()
+		} else {
+			// Mouth block
+			blks := block.(MouthBlock).Build()
+			for k, v := range blks {
+				blocks[k] = v
+			}
+		}
 	}
 	blocks[topid] = top
 	return blocks

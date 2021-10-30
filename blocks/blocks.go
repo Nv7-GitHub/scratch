@@ -14,7 +14,16 @@ type Block interface {
 	ScratchID() string
 	SetNextID(string)
 	SetPrevID(string)
+}
+
+type SimpleBlock interface {
+	Block
 	Build() types.ScratchBlock
+}
+
+type MouthBlock interface {
+	Block
+	Build() map[string]types.ScratchBlock
 }
 
 type BasicBlock struct {
