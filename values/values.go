@@ -37,3 +37,15 @@ func NewStringValue(value string) types.Value {
 func (s *StringValue) Build() types.ScratchValue {
 	return types.NewScratchString(s.Value)
 }
+
+type VariableValue struct {
+	Variable *types.Variable
+}
+
+func NewVariableValue(variable *types.Variable) types.Value {
+	return &VariableValue{Variable: variable}
+}
+
+func (v *VariableValue) Build() types.ScratchValue {
+	return types.NewScratchVariable(v.Variable.Name, v.Variable.ScratchID())
+}
