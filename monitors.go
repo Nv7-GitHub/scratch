@@ -1,7 +1,6 @@
 package scratch
 
 import (
-	"github.com/Nv7-Github/scratch/sprites"
 	"github.com/Nv7-Github/scratch/types"
 )
 
@@ -21,7 +20,7 @@ var monitorModeNames = map[MonitorMode]string{
 	MonitorSlider:  "slider",
 }
 
-func AddMonitor(v *sprites.Variable, mode MonitorMode) *VariableMonitor {
+func AddMonitor(v *types.Variable, mode MonitorMode) *VariableMonitor {
 	m := &VariableMonitor{
 		Variable:  v,
 		Mode:      mode,
@@ -32,7 +31,7 @@ func AddMonitor(v *sprites.Variable, mode MonitorMode) *VariableMonitor {
 	return m
 }
 
-func AddListMonitor(v *sprites.List) *ListMonitor {
+func AddListMonitor(v *types.List) *ListMonitor {
 	m := &ListMonitor{
 		List:    v,
 		visible: true,
@@ -48,7 +47,7 @@ type Monitor interface {
 }
 
 type VariableMonitor struct {
-	Variable             *sprites.Variable
+	Variable             *types.Variable
 	X, Y                 int
 	Width, Height        int
 	Mode                 MonitorMode
@@ -66,7 +65,7 @@ func (v *VariableMonitor) Hide() {
 }
 
 type ListMonitor struct {
-	List          *sprites.List
+	List          *types.List
 	X, Y          int
 	Width, Height int
 

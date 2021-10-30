@@ -9,8 +9,8 @@ import (
 func newBasicSprite(name string) *BasicSprite {
 	return &BasicSprite{
 		Name:      name,
-		Variables: make(map[string]*Variable),
-		Lists:     make(map[string]*List),
+		Variables: make(map[string]*types.Variable),
+		Lists:     make(map[string]*types.List),
 		Costumes:  make([]*assets.Costume, 0),
 		Sounds:    make([]*assets.Sound, 0),
 
@@ -21,8 +21,8 @@ func newBasicSprite(name string) *BasicSprite {
 type BasicSprite struct {
 	Name string
 
-	Variables map[string]*Variable // map[name]*Variable
-	Lists     map[string]*List     // map[name]*List
+	Variables map[string]*types.Variable // map[name]*Variable
+	Lists     map[string]*types.List     // map[name]*List
 
 	Costume  int
 	Costumes []*assets.Costume
@@ -45,29 +45,27 @@ func (b *BasicSprite) GetComment(block blocks.Block) string {
 	return b.comments[block.ScratchID()]
 }
 
-func (b *BasicSprite) AddVariable(name string, initialValue interface{}) *Variable {
-	variable := &Variable{
+func (b *BasicSprite) AddVariable(name string, initialValue interface{}) *types.Variable {
+	variable := &types.Variable{
 		Name:         name,
 		InitialValue: initialValue,
 		Local:        true,
-
-		id:         types.GetRandomString(),
-		spriteName: b.Name,
 	}
+	variable.SetScratchID(types.GetRandomString())
+	variable.SetScratchSpriteName(b.Name)
 	b.Variables[name] = variable
 
 	return variable
 }
 
-func (b *BasicSprite) AddList(name string, initialValues []interface{}) *List {
-	list := &List{
+func (b *BasicSprite) AddList(name string, initialValues []interface{}) *types.List {
+	list := &types.List{
 		Name:          name,
 		InitialValues: initialValues,
 		Local:         true,
-
-		id:         types.GetRandomString(),
-		spriteName: b.Name,
 	}
+	list.SetScratchListID(types.GetRandomString())
+	list.SetScratchSpriteName(b.Name)
 	b.Lists[name] = list
 
 	return list

@@ -50,18 +50,18 @@ func (s *Stage) Build() *types.ScratchStage {
 	}
 }
 
-func (s *Stage) AddVariable(name string, initialValue interface{}) *Variable {
+func (s *Stage) AddVariable(name string, initialValue interface{}) *types.Variable {
 	v := s.BasicSprite.AddVariable(name, initialValue)
-	(*v).Local = false
-	(*v).spriteName = ""
+	v.Local = false
+	v.SetScratchSpriteName("")
 
 	return v
 }
 
-func (s *Stage) AddList(name string, initialValues []interface{}) *List {
+func (s *Stage) AddList(name string, initialValues []interface{}) *types.List {
 	v := s.BasicSprite.AddList(name, initialValues)
-	(*v).Local = false
-	(*v).spriteName = ""
+	v.Local = false
+	v.SetScratchSpriteName("")
 
 	return v
 }

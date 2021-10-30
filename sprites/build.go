@@ -5,12 +5,12 @@ import "github.com/Nv7-Github/scratch/types"
 func (b *BasicSprite) Build() types.ScratchTargetBase {
 	vars := make(map[string]types.ScratchVariableValue)
 	for _, v := range b.Variables {
-		vars[v.id] = types.ScratchVariableValue{v.Name, v.InitialValue}
+		vars[v.ScratchID()] = types.ScratchVariableValue{v.Name, v.InitialValue}
 	}
 
 	lists := make(map[string]types.ScratchVariableValue)
 	for _, v := range b.Lists {
-		lists[v.id] = types.ScratchVariableValue{v.Name, v.InitialValues}
+		lists[v.ScratchID()] = types.ScratchVariableValue{v.Name, v.InitialValues}
 	}
 
 	comments := make(map[string]types.ScratchComment)

@@ -10,10 +10,10 @@ import (
 	"github.com/Nv7-Github/scratch/sprites"
 )
 
-func saveProject(t *testing.T, name string) {
+func saveProject(handle func(args ...interface{}), name string) {
 	out, err := os.Create(name)
 	if err != nil {
-		t.Fatal(err)
+		handle(err)
 	}
 	defer out.Close()
 
@@ -22,7 +22,7 @@ func saveProject(t *testing.T, name string) {
 
 	err = Save(zip)
 	if err != nil {
-		t.Fatal(err)
+		handle(err)
 	}
 }
 
@@ -35,7 +35,7 @@ func TestBasic(t *testing.T) {
 
 	addBlankBg()
 
-	saveProject(t, "testdata/Basic.sb3")
+	saveProject(t.Fatal, "testdata/Basic.sb3")
 }
 
 func TestImage(t *testing.T) {
@@ -58,7 +58,7 @@ func TestImage(t *testing.T) {
 	}
 	Stage.AddCostume(costume)
 
-	saveProject(t, "testdata/Image.sb3")
+	saveProject(t.Fatal, "testdata/Image.sb3")
 }
 
 func TestVariables(t *testing.T) {
@@ -75,7 +75,7 @@ func TestVariables(t *testing.T) {
 	listMonitor.X = 5
 	listMonitor.Y = 33
 
-	saveProject(t, "testdata/Variables.sb3")
+	saveProject(t.Fatal, "testdata/Variables.sb3")
 }
 
 func TestSprites(t *testing.T) {
@@ -87,20 +87,5 @@ func TestSprites(t *testing.T) {
 	s.AddCostume(assets.CostumeScratchCat("cat"))
 	s.AddCostume(assets.CostumeScratchCatB("cat_b"))
 
-	saveProject(t, "testdata/Sprites.sb3")
-}
-
-func TestProject(t *testing.T) {
-	Clear()
-
-	addBlankBg()
-
-	s := sprites.AddSprite("Sprite")
-	s.AddCostume(assets.CostumeScratchCat("cat"))
-
-	stack := s.NewWhenFlagClicked()
-	say := s.NewSayForTimeBlock("Hello, World!", 2)
-	stack.Add(say)
-
-	saveProject(t, "testdata/Project.sb3")
+	saveProject(t.Fatal, "testdata/Sprites.sb3")
 }
