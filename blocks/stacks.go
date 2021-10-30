@@ -28,6 +28,11 @@ func (s *Stacks) Build() map[string]types.ScratchBlock {
 	return out
 }
 
+func (s *Stacks) addStack(stack Stack) Stack {
+	s.stacks = append(s.stacks, stack)
+	return stack
+}
+
 type StageStacks struct{ *Stacks }
 type SpriteStacks struct{ *Stacks }
 

@@ -21,6 +21,6 @@ func (w *WhenFlagClicked) Build() map[string]types.ScratchBlock {
 	return b
 }
 
-func (s *Stacks) NewWhenFlagClicked() *WhenFlagClicked {
-	return &WhenFlagClicked{newBasicStack()}
+func (s *Stacks) NewWhenFlagClicked() Stack {
+	return s.addStack(&WhenFlagClicked{newBasicStack()})
 }

@@ -99,7 +99,7 @@ func TestProject(t *testing.T) {
 	s.AddCostume(assets.CostumeScratchCat("cat"))
 
 	stack := s.NewWhenFlagClicked()
-	say := s.NewSayBlock("Hello, World!")
+	say := s.NewSayForTimeBlock("Hello, World!", 2)
 	stack.Add(say)
 
 	saveProject(t, "testdata/Project.sb3")
