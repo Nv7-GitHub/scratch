@@ -1,6 +1,9 @@
 package values
 
-import "github.com/Nv7-Github/scratch/types"
+import (
+	"github.com/Nv7-Github/scratch/blocks"
+	"github.com/Nv7-Github/scratch/types"
+)
 
 type IntValue struct {
 	Value int
@@ -48,4 +51,16 @@ func NewVariableValue(variable *types.Variable) types.Value {
 
 func (v *VariableValue) Build() types.ScratchValue {
 	return types.NewScratchVariable(v.Variable.Name, v.Variable.ScratchID())
+}
+
+type BlockValue struct {
+	Block blocks.Block
+}
+
+func NewBlockValue(block blocks.Block) types.Value {
+	return &BlockValue{Block: block}
+}
+
+func (b *BlockValue) Build() types.ScratchValue {
+	return types.NewScratchBlockInput(b.Block.ScratchID())
 }
