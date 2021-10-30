@@ -8,6 +8,8 @@ import (
 func NewStage() *Stage {
 	return &Stage{
 		BasicSprite: newBasicSprite("Stage"),
+		StageStacks: &blocks.StageStacks{Stacks: blocks.NewStacks()},
+		StageBlocks: &blocks.StageBlocks{},
 
 		VideoState:           "on",
 		TextToSpeechLanguage: nil,
@@ -38,7 +40,7 @@ func (s *Stage) Build() *types.ScratchStage {
 	}
 	basic.Broadcasts = broadcasts
 
-	basic.Blocks = make(map[string]types.ScratchBlock) // Empty because no support for blocks yet
+	basic.Blocks = s.Stacks.Build()
 
 	return &types.ScratchStage{
 		ScratchTargetBase: basic,

@@ -14,8 +14,6 @@ type Block interface {
 	ScratchID() string
 	SetNextID(string)
 	SetPrevID(string)
-	ScratchNextID() string
-	ScratchPrevID() string
 	Build() types.ScratchBlock
 }
 

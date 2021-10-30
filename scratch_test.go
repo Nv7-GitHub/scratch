@@ -89,3 +89,18 @@ func TestSprites(t *testing.T) {
 
 	saveProject(t, "testdata/Sprites.sb3")
 }
+
+func TestProject(t *testing.T) {
+	Clear()
+
+	addBlankBg()
+
+	s := sprites.AddSprite("Sprite")
+	s.AddCostume(assets.CostumeScratchCat("cat"))
+
+	stack := s.NewWhenFlagClicked()
+	say := s.NewSayBlock("Hello, World!")
+	stack.Add(say)
+
+	saveProject(t, "testdata/Project.sb3")
+}

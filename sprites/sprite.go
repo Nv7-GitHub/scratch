@@ -1,9 +1,14 @@
 package sprites
 
-import "github.com/Nv7-Github/scratch/types"
+import (
+	"github.com/Nv7-Github/scratch/blocks"
+	"github.com/Nv7-Github/scratch/types"
+)
 
 type Sprite struct {
 	*BasicSprite
+	*blocks.SpriteStacks
+	*blocks.SpriteBlocks
 
 	Layer         int
 	X, Y          int
@@ -16,7 +21,10 @@ type Sprite struct {
 
 func AddSprite(name string) *Sprite {
 	s := &Sprite{
-		BasicSprite:   newBasicSprite(name),
+		BasicSprite:  newBasicSprite(name),
+		SpriteStacks: &blocks.SpriteStacks{Stacks: blocks.NewStacks()},
+		SpriteBlocks: &blocks.SpriteBlocks{},
+
 		RotationStyle: RotationStyleAllAround,
 		Layer:         len(Sprites) + 1,
 		Direction:     90,
@@ -37,7 +45,7 @@ func (s *Sprite) Hide() {
 
 func (s *Sprite) Build() types.ScratchTarget {
 	basic := s.BasicSprite.Build()
-	basic.Blocks = make(map[string]types.ScratchBlock) // Empty because no support for blocks yet
+	basic.Blocks = s.Stacks.Build()
 	return &types.ScratchSprite{
 		ScratchTargetBase: basic,
 

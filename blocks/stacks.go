@@ -3,16 +3,38 @@ package blocks
 import "github.com/Nv7-Github/scratch/types"
 
 type Stack interface {
-	Build(x, y int) map[string]types.ScratchBlock
+	Build() map[string]types.ScratchBlock
 	Add(Block)
 }
 
-type Stacks struct{}
+type Stacks struct {
+	stacks []Stack
+}
+
+func NewStacks() *Stacks {
+	return &Stacks{
+		stacks: make([]Stack, 0),
+	}
+}
+
+func (s *Stacks) Build() map[string]types.ScratchBlock {
+	out := make(map[string]types.ScratchBlock)
+	for _, stack := range s.stacks {
+		built := stack.Build()
+		for id, block := range built {
+			out[id] = block
+		}
+	}
+	return out
+}
+
 type StageStacks struct{ *Stacks }
 type SpriteStacks struct{ *Stacks }
 
 type BasicStack struct {
 	blocks []Block
+	X      int
+	Y      int
 }
 
 func (b *BasicStack) Add(block Block) {
