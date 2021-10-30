@@ -12,3 +12,7 @@ download:
 	rm -rf Project
 	unzip Project.zip -d Project
 	rm Project.zip
+
+loadtest:
+	rm -rf Project
+	unzip testdata/Project.sb3 -d Project

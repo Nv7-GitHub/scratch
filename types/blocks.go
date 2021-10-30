@@ -24,6 +24,10 @@ func NewScratchInputNoShadow(val string) ScratchInput {
 	return ScratchInput{2, val}
 }
 
+func NewScratchInputNoShadowBlock(val ScratchValue) ScratchInput {
+	return ScratchInput{2, val}
+}
+
 func NewScratchInputObscured(val ScratchValue, below ScratchValue) ScratchInput {
 	return ScratchInput{3, val, below}
 }

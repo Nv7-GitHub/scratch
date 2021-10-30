@@ -3,7 +3,7 @@ package types
 import "io"
 
 type Value interface {
-	Build() ScratchValue
+	Build() ScratchInput
 }
 
 type FS interface {

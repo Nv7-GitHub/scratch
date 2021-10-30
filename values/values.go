@@ -13,16 +13,16 @@ func NewIntValue(val int) types.Value {
 	return &IntValue{Value: val}
 }
 
-func (i *IntValue) Build() types.ScratchValue {
-	return types.NewScratchInt(i.Value)
+func (i *IntValue) Build() types.ScratchInput {
+	return types.NewScratchInputShadow(types.NewScratchInt(i.Value))
 }
 
 type FloatValue struct {
 	Value float64
 }
 
-func (f *FloatValue) Build() types.ScratchValue {
-	return types.NewScratchFloat(f.Value)
+func (f *FloatValue) Build() types.ScratchInput {
+	return types.NewScratchInputShadow(types.NewScratchFloat(f.Value))
 }
 
 func NewFloatValue(val float64) types.Value {
@@ -37,8 +37,8 @@ func NewStringValue(value string) types.Value {
 	return &StringValue{Value: value}
 }
 
-func (s *StringValue) Build() types.ScratchValue {
-	return types.NewScratchString(s.Value)
+func (s *StringValue) Build() types.ScratchInput {
+	return types.NewScratchInputShadow(types.NewScratchString(s.Value))
 }
 
 type VariableValue struct {
@@ -49,8 +49,8 @@ func NewVariableValue(variable *types.Variable) types.Value {
 	return &VariableValue{Variable: variable}
 }
 
-func (v *VariableValue) Build() types.ScratchValue {
-	return types.NewScratchVariable(v.Variable.Name, v.Variable.ScratchID())
+func (v *VariableValue) Build() types.ScratchInput {
+	return types.NewScratchInputObscured(types.NewScratchVariable(v.Variable.Name, v.Variable.ScratchID()), types.NewScratchString(""))
 }
 
 type BlockValue struct {
@@ -61,6 +61,6 @@ func NewBlockValue(block blocks.Block) types.Value {
 	return &BlockValue{Block: block}
 }
 
-func (b *BlockValue) Build() types.ScratchValue {
-	return types.NewScratchBlockInput(b.Block.ScratchID())
+func (b *BlockValue) Build() types.ScratchInput {
+	return types.NewScratchInputShadow(types.NewScratchBlockInput(b.Block.ScratchID()))
 }

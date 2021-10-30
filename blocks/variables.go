@@ -7,6 +7,7 @@ type SetVariable struct {
 
 	variable *types.Variable
 	val      types.Value
+	Change   bool
 }
 
 func (b *Blocks) NewSetVariable(variable *types.Variable, val types.Value) *SetVariable {
@@ -18,13 +19,17 @@ func (b *Blocks) NewSetVariable(variable *types.Variable, val types.Value) *SetV
 }
 
 func (s *SetVariable) Build() types.ScratchBlock {
-	return types.ScratchBlock{
+	blk := types.ScratchBlock{
 		Opcode:   "data_setvariableto",
 		Next:     s.next,
 		Parent:   s.prev,
-		Inputs:   map[string]types.ScratchInput{"VALUE": types.NewScratchInputShadow(s.val.Build())},
+		Inputs:   map[string]types.ScratchInput{"VALUE": s.val.Build()},
 		Fields:   map[string]types.ScratchField{"VARIABLE": types.NewScratchValueFieldVariable(s.variable.Name, s.variable.ScratchID())},
 		Shadow:   false,
 		TopLevel: false,
 	}
+	if s.Change {
+		blk.Opcode = "data_changevariableby"
+	}
+	return blk
 }

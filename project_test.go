@@ -18,32 +18,32 @@ func createProject(handler func(args ...interface{})) {
 
 	// Stack and hello world
 	stack := s.NewWhenFlagClicked()
-	say := s.NewSayForTimeBlock("Hello, World!", 0.5)
+	say := s.NewSayForTimeBlock(values.NewStringValue("Hello, World!"), 0.5)
 	stack.Add(say)
 
-	// Variables
-	variable := s.AddVariable("variable", "This is a variable. It will be changed once the say completes.")
-	m := AddMonitor(variable, MonitorDefault)
-	m.X = 5
-	m.Y = 5
-	set := s.NewSetVariable(variable, values.NewStringValue("This variable has been changed."))
-	stack.Add(set)
+	// Variable
+	iter := s.AddVariable("i", 0)
+	AddMonitor(iter, MonitorDefault)
 
-	// Loop
-	loop := s.NewRepeat(10)
+	// FOR loop (i := 0; i < 10; i++)
+	initialize := s.NewSetVariable(iter, values.NewIntValue(0)) // i := 0
+	stack.Add(initialize)
+
+	var condition blocks.Block = s.NewCompare(values.NewVariableValue(iter), values.NewIntValue(10), blocks.CompareLessThan) // i < 10
+	stack.Add(condition)
+	condition = s.NewNot(values.NewBlockValue(condition)) // ! since repeat until
+	stack.Add(condition)
+
+	loop := s.NewRepeatUntil(values.NewBlockValue(condition))
 	stack.Add(loop)
-	say = s.NewSayForTimeBlock("Hi", 0.1)
+
+	// Add contents of loop
+	say = s.NewSayForTimeBlock(values.NewVariableValue(iter), 0.25) // say(i)
 	loop.Add(say)
 
-	// Global var & compare
-	global := Stage.AddVariable("onelessthantwo", "Not calculated yet!")
-	m = AddMonitor(global, MonitorDefault)
-	m.X = 5
-	m.Y = 33
-	lt := s.NewCompare(values.NewIntValue(1), values.NewIntValue(2), blocks.CompareLessThan)
-	set = s.NewSetVariable(global, values.NewBlockValue(lt))
-	stack.Add(lt)
-	stack.Add(set)
+	incr := s.NewSetVariable(iter, values.NewIntValue(1)) // i++
+	incr.Change = true
+	loop.Add(incr)
 
 	saveProject(handler, "testdata/Project.sb3")
 }

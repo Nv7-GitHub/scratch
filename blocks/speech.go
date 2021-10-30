@@ -7,7 +7,7 @@ type SayBlock struct {
 
 	time   bool
 	length float64
-	text   string
+	val    types.Value
 }
 
 func (s *SayBlock) Build() types.ScratchBlock {
@@ -16,7 +16,7 @@ func (s *SayBlock) Build() types.ScratchBlock {
 		Next:   s.next,
 		Parent: s.prev,
 		Inputs: map[string]types.ScratchInput{
-			"MESSAGE": types.NewScratchInputShadow(types.NewScratchString(s.text)),
+			"MESSAGE": s.val.Build(),
 		},
 		Fields:   make(map[string]types.ScratchField),
 		Shadow:   false,
@@ -29,20 +29,20 @@ func (s *SayBlock) Build() types.ScratchBlock {
 	return blk
 }
 
-func (b *Blocks) NewSayBlock(text string) *SayBlock {
+func (b *Blocks) NewSayBlock(text types.Value) *SayBlock {
 	return &SayBlock{
 		BasicBlock: newBasicBlock(types.GetRandomString()),
 		time:       false,
 		length:     0,
-		text:       text,
+		val:        text,
 	}
 }
 
-func (b *Blocks) NewSayForTimeBlock(text string, time float64) *SayBlock {
+func (b *Blocks) NewSayForTimeBlock(text types.Value, time float64) *SayBlock {
 	return &SayBlock{
 		BasicBlock: newBasicBlock(types.GetRandomString()),
 		time:       true,
 		length:     time,
-		text:       text,
+		val:        text,
 	}
 }
