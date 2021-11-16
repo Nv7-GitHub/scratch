@@ -16,13 +16,13 @@ func (b *BasicSprite) Build() types.ScratchTargetBase {
 	comments := make(map[string]types.ScratchComment)
 	for id, c := range b.comments {
 		comments[id] = types.ScratchComment{
-			BlockID:   id,
-			X:         0,
-			Y:         0,
-			Width:     0,
-			Height:    0,
-			Minimized: true,
-			Text:      c,
+			BlockID:   c.blockid,
+			X:         c.X,
+			Y:         c.Y,
+			Width:     c.Width,
+			Height:    c.Height,
+			Minimized: c.Minimized,
+			Text:      c.Text,
 		}
 	}
 

@@ -13,7 +13,7 @@ func newBasicSprite(name string) *BasicSprite {
 		Lists:     make(map[string]*types.List),
 		Costumes:  make([]*assets.Costume, 0),
 		Sounds:    make([]*assets.Sound, 0),
-		comments:  make(map[string]string),
+		comments:  make(map[string]*Comment),
 
 		Volume: 100,
 	}
@@ -31,7 +31,7 @@ type BasicSprite struct {
 	Sounds []*assets.Sound
 	Volume int
 
-	comments map[string]string
+	comments map[string]*Comment
 }
 
 func (b *BasicSprite) AddCostume(costume *assets.Costume) {
@@ -42,12 +42,31 @@ func (b *BasicSprite) AddSound(sound *assets.Sound) {
 	b.Sounds = append(b.Sounds, sound)
 }
 
-func (b *BasicSprite) SetComment(block blocks.Block, comment string) {
-	b.comments[block.ScratchID()] = comment
+func (b *BasicSprite) SetComment(block blocks.Block, comment string) *Comment {
+	cmt := &Comment{
+		id:      types.GetRandomString(),
+		blockid: block.ScratchID(),
+
+		Text:      comment,
+		Minimized: true,
+	}
+	b.comments[cmt.id] = cmt
+	block.SetCommentID(cmt.id)
+	return cmt
 }
 
-func (b *BasicSprite) GetComment(block blocks.Block) string {
-	return b.comments[block.ScratchID()]
+func (b *BasicSprite) GetComment(block blocks.Block) *Comment {
+	return b.comments[*block.CommentID()]
+}
+
+type Comment struct {
+	id      string
+	blockid string
+
+	Text          string
+	X, Y          int
+	Width, Height int
+	Minimized     bool
 }
 
 func (b *BasicSprite) AddVariable(name string, initialValue interface{}) *types.Variable {

@@ -12,8 +12,11 @@ func Clear() {
 
 type Block interface {
 	ScratchID() string
+	CommentID() *string
+
 	SetNextID(string)
 	SetPrevID(string)
+	SetCommentID(string)
 }
 
 type BlockVal interface {
@@ -31,9 +34,10 @@ type MouthBlock interface {
 }
 
 type BasicBlock struct {
-	next *string
-	prev *string
-	id   string
+	next    *string
+	prev    *string
+	comment *string
+	id      string
 }
 
 func (b *BasicBlock) Build(opcode string, inputs map[string]types.ScratchInput, fields map[string]types.ScratchField) types.ScratchBlock {
@@ -45,6 +49,7 @@ func (b *BasicBlock) Build(opcode string, inputs map[string]types.ScratchInput, 
 		Fields:   fields,
 		Shadow:   false,
 		TopLevel: false,
+		Comment:  b.comment,
 	}
 }
 
@@ -58,6 +63,14 @@ func (b *BasicBlock) SetNextID(id string) {
 
 func (b *BasicBlock) SetPrevID(id string) {
 	b.prev = &id
+}
+
+func (b *BasicBlock) SetCommentID(id string) {
+	b.comment = &id
+}
+
+func (b *BasicBlock) CommentID() *string {
+	return b.comment
 }
 
 func newBasicBlock(id string) *BasicBlock {
