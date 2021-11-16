@@ -27,18 +27,10 @@ type Compare struct {
 func (c *Compare) ScratchBlockVal() {}
 
 func (c *Compare) Build() types.ScratchBlock {
-	return types.ScratchBlock{
-		Opcode: compareOperandNames[c.Op],
-		Next:   c.next,
-		Parent: c.prev,
-		Inputs: map[string]types.ScratchInput{
-			"OPERAND1": c.Val1.Build(),
-			"OPERAND2": c.Val2.Build(),
-		},
-		Fields:   make(map[string]types.ScratchField),
-		Shadow:   false,
-		TopLevel: false,
-	}
+	return c.BasicBlock.Build(compareOperandNames[c.Op], map[string]types.ScratchInput{
+		"OPERAND1": c.Val1.Build(),
+		"OPERAND2": c.Val2.Build(),
+	}, make(map[string]types.ScratchField))
 }
 
 func (b *Blocks) NewCompare(val1 types.Value, val2 types.Value, op CompareOperand) *Compare {

@@ -13,8 +13,7 @@ func NewStage() *Stage {
 
 		VideoState:           "on",
 		TextToSpeechLanguage: nil,
-		Broadcasts:           make([]string, 0),
-		broadcastIDs:         make([]string, 0),
+		Broadcasts:           make([]*types.BroadcastMessage, 0),
 	}
 }
 
@@ -23,8 +22,7 @@ type Stage struct {
 	*blocks.StageStacks
 	*blocks.StageBlocks
 
-	Broadcasts   []string
-	broadcastIDs []string
+	Broadcasts []*types.BroadcastMessage
 
 	VideoState           string
 	TextToSpeechLanguage *string
@@ -35,8 +33,8 @@ func (s *Stage) Build() *types.ScratchStage {
 	basic.IsStage = true
 
 	broadcasts := make(map[string]string)
-	for i, broadcast := range s.Broadcasts {
-		broadcasts[s.broadcastIDs[i]] = broadcast
+	for _, broadcast := range s.Broadcasts {
+		broadcasts[broadcast.ScratchID()] = broadcast.Name
 	}
 	basic.Broadcasts = broadcasts
 
@@ -64,4 +62,10 @@ func (s *Stage) AddList(name string, initialValues []interface{}) *types.List {
 	v.SetScratchSpriteName("")
 
 	return v
+}
+
+func (s *Stage) NewBroadcast(name string) *types.BroadcastMessage {
+	msg := types.NewScratchBroadcastMessage(name, types.GetRandomString())
+	s.Broadcasts = append(s.Broadcasts, msg)
+	return msg
 }

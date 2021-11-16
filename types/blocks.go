@@ -101,3 +101,7 @@ func (s *scratchInputField) mustBeInputField() {}
 func NewScratchValueFieldVariable(name, id string) ScratchField {
 	return &scratchInputField{name, id}
 }
+
+func NewScratchFieldBroadcast(name, id string) ScratchField {
+	return &scratchInputField{name, id}
+}

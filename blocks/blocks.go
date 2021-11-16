@@ -36,6 +36,18 @@ type BasicBlock struct {
 	id   string
 }
 
+func (b *BasicBlock) Build(opcode string, inputs map[string]types.ScratchInput, fields map[string]types.ScratchField) types.ScratchBlock {
+	return types.ScratchBlock{
+		Opcode:   opcode,
+		Next:     b.next,
+		Parent:   b.prev,
+		Inputs:   inputs,
+		Fields:   fields,
+		Shadow:   false,
+		TopLevel: false,
+	}
+}
+
 func (b *BasicBlock) ScratchID() string {
 	return b.id
 }

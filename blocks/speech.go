@@ -11,17 +11,9 @@ type SayBlock struct {
 }
 
 func (s *SayBlock) Build() types.ScratchBlock {
-	blk := types.ScratchBlock{
-		Opcode: "looks_say",
-		Next:   s.next,
-		Parent: s.prev,
-		Inputs: map[string]types.ScratchInput{
-			"MESSAGE": s.val.Build(),
-		},
-		Fields:   make(map[string]types.ScratchField),
-		Shadow:   false,
-		TopLevel: false,
-	}
+	blk := s.BasicBlock.Build("looks_say", map[string]types.ScratchInput{
+		"MESSAGE": s.val.Build(),
+	}, make(map[string]types.ScratchField))
 	if s.time {
 		blk.Opcode = "looks_sayforsecs"
 		blk.Inputs["SECS"] = types.NewScratchInputShadow(types.NewScratchFloat(s.length))

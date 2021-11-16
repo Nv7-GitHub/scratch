@@ -13,6 +13,7 @@ func newBasicSprite(name string) *BasicSprite {
 		Lists:     make(map[string]*types.List),
 		Costumes:  make([]*assets.Costume, 0),
 		Sounds:    make([]*assets.Sound, 0),
+		comments:  make(map[string]string),
 
 		Volume: 100,
 	}
@@ -39,6 +40,10 @@ func (b *BasicSprite) AddCostume(costume *assets.Costume) {
 
 func (b *BasicSprite) AddSound(sound *assets.Sound) {
 	b.Sounds = append(b.Sounds, sound)
+}
+
+func (b *BasicSprite) SetComment(block blocks.Block, comment string) {
+	b.comments[block.ScratchID()] = comment
 }
 
 func (b *BasicSprite) GetComment(block blocks.Block) string {
