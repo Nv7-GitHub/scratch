@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Nv7-Github/scratch/assets"
+	"github.com/Nv7-Github/scratch/blocks"
 	"github.com/Nv7-Github/scratch/sprites"
 )
 
@@ -88,4 +89,14 @@ func TestSprites(t *testing.T) {
 	s.AddCostume(assets.CostumeScratchCatB("cat_b"))
 
 	saveProject(t.Fatal, "testdata/Sprites.sb3")
+}
+
+func TestFunctions(t *testing.T) {
+	Clear()
+
+	addBlankBg()
+
+	Stage.NewFunction(blocks.NewFunctionParameterLabel("add"), blocks.NewFunctionParameterValue("a", blocks.FunctionParameterString, 0), blocks.NewFunctionParameterValue("b", blocks.FunctionParameterString, 0))
+
+	saveProject(t.Fatal, "testdata/Functions.sb3")
 }

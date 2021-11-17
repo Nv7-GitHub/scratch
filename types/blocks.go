@@ -8,10 +8,21 @@ type ScratchBlock struct {
 	Fields   map[string]ScratchField `json:"fields"` // map[fieldName]FieldValue
 	Shadow   bool                    `json:"shadow"`
 	TopLevel bool                    `json:"topLevel"` // False if the block has a parent and true otherwise.
+	Mutation *ScratchMutation        `json:"mutation,omitempty"`
 
 	X       *int    `json:"x,omitempty"` // If toplevel
 	Y       *int    `json:"y,omitempty"`
 	Comment *string `json:"comment,omitempty"` // ID of comment if it has one
+}
+
+type ScratchMutation struct {
+	TagName          string        `json:"tagName"`  // always "mutation"
+	Children         []bool        `json:"children"` // seems to be just an empty array
+	ProcCode         string        `json:"proccode"` // name of block, has parameters in it like "add %s %s label %b" where %s is string/number and %b is boolean
+	ArgumentIDs      []string      `json:"argumentids"`
+	ArgumentNames    []string      `json:"argumentnames"`
+	ArgumentDefaults []interface{} `json:"argumentdefaults"`
+	Warp             bool          `json:"warp"` // run without screen refresh?
 }
 
 type ScratchInput []interface{}
@@ -104,4 +115,8 @@ func NewScratchValueFieldVariable(name, id string) ScratchField {
 
 func NewScratchFieldBroadcast(name, id string) ScratchField {
 	return &scratchInputField{name, id}
+}
+
+func NewScratchFieldParamName(name string) ScratchField {
+	return &scratchInputField{name, nil}
 }
