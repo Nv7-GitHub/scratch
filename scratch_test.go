@@ -101,7 +101,7 @@ func TestFunctions(t *testing.T) {
 	retMonitor.X = 5
 	retMonitor.Y = 5
 
-	fn := Stage.NewFunction(blocks.NewFunctionParameterLabel("add"), blocks.NewFunctionParameterValue("a", blocks.FunctionParameterString, 0), blocks.NewFunctionParameterValue("b", blocks.FunctionParameterString, 0))
+	fn := Stage.NewFunction(blocks.NewFunctionParameterLabel("add"), blocks.NewFunctionParameterValue("a", blocks.FunctionParameterString, 0), blocks.NewFunctionParameterLabel("to"), blocks.NewFunctionParameterValue("b", blocks.FunctionParameterString, 0))
 	fn.Warp = true
 
 	// TODO: Implement math functions
