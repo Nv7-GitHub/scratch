@@ -96,9 +96,9 @@ func (f *Function) Build() map[string]types.ScratchBlock {
 			TagName:          "mutation",
 			Children:         make([]bool, 0),
 			ProcCode:         f.procCode,
-			ArgumentIDs:      argIDs,
-			ArgumentNames:    argNames,
-			ArgumentDefaults: argDefaults,
+			ArgumentIDs:      types.MarshalStringArray(argIDs),
+			ArgumentNames:    types.MarshalStringArray(argNames),
+			ArgumentDefaults: types.MarshalInterfaceArray(argDefaults),
 			Warp:             f.Warp,
 		},
 	}
@@ -195,6 +195,10 @@ func (f *FunctionParameterInput) Name() string {
 
 func (f *FunctionParameterInput) Type() FunctionParameterType {
 	return f.typ
+}
+
+func (f *FunctionParameterInput) Default() interface{} {
+	return f.initialValue
 }
 
 func NewFunctionParameterLabel(text string) *FunctionParameterLabel {

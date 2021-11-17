@@ -16,13 +16,13 @@ type ScratchBlock struct {
 }
 
 type ScratchMutation struct {
-	TagName          string        `json:"tagName"`  // always "mutation"
-	Children         []bool        `json:"children"` // seems to be just an empty array
-	ProcCode         string        `json:"proccode"` // name of block, has parameters in it like "add %s %s label %b" where %s is string/number and %b is boolean
-	ArgumentIDs      []string      `json:"argumentids"`
-	ArgumentNames    []string      `json:"argumentnames"`
-	ArgumentDefaults []interface{} `json:"argumentdefaults"`
-	Warp             bool          `json:"warp"` // run without screen refresh?
+	TagName          string `json:"tagName"`          // always "mutation"
+	Children         []bool `json:"children"`         // seems to be just an empty array
+	ProcCode         string `json:"proccode"`         // name of block, has parameters in it like "add %s %s label %b" where %s is string/number and %b is boolean
+	ArgumentIDs      string `json:"argumentids"`      // []string, but marshal with JSON (use MarshalStringArray)
+	ArgumentNames    string `json:"argumentnames"`    // []string, but marshal with JSON (use MarshalStringArray)
+	ArgumentDefaults string `json:"argumentdefaults"` // []interface{}, but marshal each element with JSON into []string and then marshal that with JSON (use MarshalInterfaceArray)
+	Warp             bool   `json:"warp"`             // run without screen refresh?
 }
 
 type ScratchInput []interface{}

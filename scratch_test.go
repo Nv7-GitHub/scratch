@@ -96,7 +96,22 @@ func TestFunctions(t *testing.T) {
 
 	addBlankBg()
 
-	Stage.NewFunction(blocks.NewFunctionParameterLabel("add"), blocks.NewFunctionParameterValue("a", blocks.FunctionParameterString, 0), blocks.NewFunctionParameterValue("b", blocks.FunctionParameterString, 0))
+	ret := Stage.AddVariable("return", 0)
+	retMonitor := AddMonitor(ret, MonitorDefault)
+	retMonitor.X = 5
+	retMonitor.Y = 5
+
+	fn := Stage.NewFunction(blocks.NewFunctionParameterLabel("add"), blocks.NewFunctionParameterValue("a", blocks.FunctionParameterString, 0), blocks.NewFunctionParameterValue("b", blocks.FunctionParameterString, 0))
+	fn.Warp = true
+
+	// TODO: Implement math functions
+	change1 := Stage.NewSetVariable(ret, fn.Parameters[0])
+	change1.Change = true
+	fn.Add(change1)
+
+	change2 := Stage.NewSetVariable(ret, fn.Parameters[1])
+	change2.Change = true
+	fn.Add(change2)
 
 	saveProject(t.Fatal, "testdata/Functions.sb3")
 }
