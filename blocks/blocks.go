@@ -20,6 +20,8 @@ type Block interface {
 }
 
 type BlockVal interface {
+	Block
+
 	ScratchBlockVal()
 }
 

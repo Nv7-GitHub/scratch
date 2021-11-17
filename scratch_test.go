@@ -9,6 +9,7 @@ import (
 	"github.com/Nv7-Github/scratch/assets"
 	"github.com/Nv7-Github/scratch/blocks"
 	"github.com/Nv7-Github/scratch/sprites"
+	"github.com/Nv7-Github/scratch/values"
 )
 
 func saveProject(handle func(args ...interface{}), name string) {
@@ -105,13 +106,11 @@ func TestFunctions(t *testing.T) {
 	fn.Warp = true
 
 	// TODO: Implement math functions
-	change1 := Stage.NewSetVariable(ret, fn.Parameters[0])
-	change1.Change = true
-	fn.Add(change1)
+	op := Stage.NewMath(fn.Parameters[0], fn.Parameters[1], blocks.MathOperationAdd)
+	fn.Add(op)
 
-	change2 := Stage.NewSetVariable(ret, fn.Parameters[1])
-	change2.Change = true
-	fn.Add(change2)
+	set := Stage.NewSetVariable(ret, values.NewBlockValue(op))
+	fn.Add(set)
 
 	saveProject(t.Fatal, "testdata/Functions.sb3")
 }

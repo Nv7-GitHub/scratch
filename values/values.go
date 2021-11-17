@@ -57,7 +57,7 @@ type BlockValue struct {
 	Block blocks.Block
 }
 
-func NewBlockValue(block blocks.Block) types.Value {
+func NewBlockValue(block blocks.BlockVal) types.Value {
 	return &BlockValue{Block: block}
 }
 

@@ -34,7 +34,7 @@ func createProject(handler func(args ...interface{})) {
 	stack.Add(initialize)
 	s.SetComment(initialize, "Loop example")
 
-	var condition blocks.Block = s.NewCompare(values.NewVariableValue(iter), values.NewIntValue(10), blocks.CompareLessThan) // i < 10
+	var condition blocks.BlockVal = s.NewCompare(values.NewVariableValue(iter), values.NewIntValue(10), blocks.CompareLessThan) // i < 10
 	stack.Add(condition)
 	condition = s.NewNot(values.NewBlockValue(condition)) // ! since repeat until
 	stack.Add(condition)
