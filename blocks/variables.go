@@ -43,7 +43,7 @@ func (b *Blocks) NewChangeVariable(variable *types.Variable, val types.Value) *C
 }
 
 func (c *ChangeVariable) Build() types.ScratchBlock {
-	return c.BasicBlock.Build("data_setvariableto", map[string]types.ScratchInput{
+	return c.BasicBlock.Build("data_changevariableby", map[string]types.ScratchInput{
 		"VALUE": c.val.Build(),
 	}, map[string]types.ScratchField{
 		"VARIABLE": types.NewScratchValueFieldVariable(c.variable.Name, c.variable.ScratchID()),

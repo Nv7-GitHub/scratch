@@ -53,6 +53,18 @@ func (v *VariableValue) Build() types.ScratchInput {
 	return types.NewScratchInputObscured(types.NewScratchVariable(v.Variable.Name, v.Variable.ScratchID()), types.NewScratchString(""))
 }
 
+type ListValue struct {
+	List *types.List
+}
+
+func NewListValue(list *types.List) types.Value {
+	return &ListValue{List: list}
+}
+
+func (l *ListValue) Build() types.ScratchInput {
+	return types.NewScratchInputObscured(types.NewScratchVariable(l.List.Name, l.List.ScratchID()), types.NewScratchString(""))
+}
+
 type BlockValue struct {
 	Block blocks.Block
 }

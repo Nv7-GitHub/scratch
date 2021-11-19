@@ -63,23 +63,6 @@ func TestImage(t *testing.T) {
 	saveProject(t.Fatal, "testdata/Image.sb3")
 }
 
-func TestVariables(t *testing.T) {
-	Clear()
-	addBlankBg()
-
-	variable := Stage.AddVariable("variable", "This is a variable.")
-	variableMonitor := AddMonitor(variable, MonitorDefault)
-	variableMonitor.X = 5
-	variableMonitor.Y = 5
-
-	list := Stage.AddList("list", []interface{}{"This is a list.", "It has multiple values.", "It has initial values."})
-	listMonitor := AddListMonitor(list)
-	listMonitor.X = 5
-	listMonitor.Y = 33
-
-	saveProject(t.Fatal, "testdata/Variables.sb3")
-}
-
 func TestSprites(t *testing.T) {
 	Clear()
 
