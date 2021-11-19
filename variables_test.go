@@ -29,15 +29,17 @@ func TestVariables(t *testing.T) {
 
 	// Variable blocks
 	stack.Add(Stage.NewSetVariable(variable, values.NewStringValue("This is a set variable block.")))
-	stack.Add(Stage.NewChangeVariable(variable, values.NewIntValue(1)))
-	stack.Add(Stage.NewChangeVariableVisibility(variable, true))
+	stack.Add(Stage.NewChangeVariable(numVar, values.NewIntValue(1)))
 	stack.Add(Stage.NewChangeVariableVisibility(variable, false))
+	stack.Add(Stage.NewChangeVariableVisibility(variable, true))
 
 	// List Blocks
 	stack.Add(Stage.NewAddToList(list, values.NewStringValue("This is an add to list block.")))
 	stack.Add(Stage.NewDeleteFromList(list, values.NewIntValue(4)))
 	stack.Add(Stage.NewInsertInList(list, values.NewIntValue(2), values.NewStringValue("This is an insert in list block.")))
 	stack.Add(Stage.NewReplaceInList(list, values.NewIntValue(3), values.NewStringValue("This is a replace in list block.")))
+	stack.Add(Stage.NewChangeListVisibility(list, false))
+	stack.Add(Stage.NewChangeListVisibility(list, true))
 
 	// TODO: Variable values
 	// TODO: List values

@@ -1,6 +1,8 @@
 package blocks
 
-import "github.com/Nv7-Github/scratch/types"
+import (
+	"github.com/Nv7-Github/scratch/types"
+)
 
 // AddToList
 type AddToList struct {
@@ -18,7 +20,7 @@ func (a *AddToList) Build() types.ScratchBlock {
 	})
 }
 
-func (b Blocks) NewAddToList(list *types.List, value types.Value) *AddToList {
+func (b *Blocks) NewAddToList(list *types.List, value types.Value) *AddToList {
 	return &AddToList{
 		BasicBlock: newBasicBlock(types.GetRandomString()),
 		List:       list,
