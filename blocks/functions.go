@@ -1,6 +1,7 @@
 package blocks
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/Nv7-Github/scratch/types"
@@ -29,6 +30,7 @@ type FunctionParameterValue interface {
 type ParamType struct {
 	name         string
 	id           string
+	keyId        string
 	typ          FunctionParameterType
 	initialValue interface{}
 }
@@ -71,9 +73,8 @@ func (f *Function) Build() map[string]types.ScratchBlock {
 	argIDs := make([]string, len(f.paramTypes))
 	inps := make(map[string]types.ScratchInput)
 	for i, v := range f.paramTypes {
-		id := types.GetRandomString()
-		argIDs[i] = id
-		inps[id] = types.NewScratchInputShadow(types.NewScratchBlockInput(v.id))
+		argIDs[i] = v.keyId
+		inps[v.keyId] = types.NewScratchInputShadow(types.NewScratchBlockInput(v.id))
 	}
 
 	// Get other data
@@ -84,6 +85,7 @@ func (f *Function) Build() map[string]types.ScratchBlock {
 		argDefaults[i] = v.initialValue
 	}
 
+	argNameVal := types.MarshalStringArray(argNames)
 	stack[customBlkId] = types.ScratchBlock{
 		Opcode:   "procedures_prototype",
 		Next:     nil,
@@ -97,7 +99,7 @@ func (f *Function) Build() map[string]types.ScratchBlock {
 			Children:         make([]bool, 0),
 			ProcCode:         f.procCode,
 			ArgumentIDs:      types.MarshalStringArray(argIDs),
-			ArgumentNames:    types.MarshalStringArray(argNames),
+			ArgumentNames:    &argNameVal,
 			ArgumentDefaults: types.MarshalInterfaceArray(argDefaults),
 			Warp:             f.Warp,
 		},
@@ -145,9 +147,11 @@ func (s *Stacks) NewFunction(params ...FunctionParameter) *Function {
 		val, ok := v.(FunctionParameterValue)
 		if ok {
 			id := types.GetRandomString()
+			keyId := types.GetRandomString()
 			parTypes[i] = ParamType{
 				name:         val.Name(),
 				id:           id,
+				keyId:        keyId,
 				typ:          val.Type(),
 				initialValue: val.Default(),
 			}
@@ -165,6 +169,45 @@ func (s *Stacks) NewFunction(params ...FunctionParameter) *Function {
 		paramTypes: parTypes,
 		procCode:   procCode,
 	}).(*Function)
+}
+
+// Function Calls
+type FunctionCall struct {
+	*BasicBlock
+
+	function *Function
+	params   []types.Value
+}
+
+func (f *FunctionCall) Build() types.ScratchBlock {
+	inpMap := make(map[string]types.ScratchInput, len(f.params))
+	argumentIds := make([]string, len(f.function.paramTypes))
+	for i, param := range f.params {
+		inpMap[f.function.paramTypes[i].keyId] = param.Build()
+		argumentIds[i] = f.function.paramTypes[i].keyId
+	}
+
+	mutation := types.ScratchMutation{
+		TagName:     "mutation",
+		Children:    make([]bool, 0),
+		ProcCode:    f.function.procCode,
+		ArgumentIDs: types.MarshalStringArray(argumentIds),
+		Warp:        f.function.Warp,
+	}
+	blk := f.BasicBlock.Build("procedures_call", inpMap, make(map[string]types.ScratchField))
+	blk.Mutation = &mutation
+	return blk
+}
+
+func (b *Blocks) NewFunctionCall(fn *Function, params ...types.Value) (*FunctionCall, error) {
+	if len(params) != len(fn.paramTypes) {
+		return nil, errors.New("incorrect number of arguments")
+	}
+	return &FunctionCall{
+		BasicBlock: newBasicBlock(types.GetRandomString()),
+
+		function: fn,
+	}, nil
 }
 
 // Function parameter types
