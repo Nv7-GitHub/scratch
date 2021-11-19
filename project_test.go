@@ -46,8 +46,7 @@ func createProject(handler func(args ...interface{})) {
 	say = s.NewSayForTimeBlock(values.NewVariableValue(iter), 0.25) // say(i)
 	loop.Add(say)
 
-	incr := s.NewSetVariable(iter, values.NewIntValue(1)) // i++
-	incr.Change = true
+	incr := s.NewChangeVariable(iter, values.NewIntValue(1)) // i++
 	loop.Add(incr)
 
 	// Concurrency
@@ -88,12 +87,10 @@ func createProject(handler func(args ...interface{})) {
 	concurrentLoop := s.NewRepeatUntil(values.NewBlockValue(condConcurrent))
 	concurrent.Add(concurrentLoop)
 
-	mainLoopBlk := s.NewSetVariable(mainThreadVar, values.NewIntValue(1))
-	mainLoopBlk.Change = true
+	mainLoopBlk := s.NewChangeVariable(mainThreadVar, values.NewIntValue(1))
 	mainLoop.Add(mainLoopBlk)
 
-	concurrentLoopBlk := s.NewSetVariable(concurrentVar, values.NewIntValue(1))
-	concurrentLoopBlk.Change = true
+	concurrentLoopBlk := s.NewChangeVariable(concurrentVar, values.NewIntValue(1))
 	concurrentLoop.Add(concurrentLoopBlk)
 
 	waitMain := s.NewWait(values.NewFloatValue(0.25))
