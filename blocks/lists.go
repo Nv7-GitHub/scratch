@@ -174,6 +174,15 @@ func (f *FindInList) Build() types.ScratchBlock {
 	})
 }
 
+func (b *Blocks) NewFindInList(list *types.List, value types.Value) *FindInList {
+	return &FindInList{
+		BasicBlock: newBasicBlock(types.GetRandomString()),
+
+		List:  list,
+		Value: value,
+	}
+}
+
 // LengthOfList
 type LengthOfList struct {
 	*BasicBlock
@@ -221,5 +230,32 @@ func (b *Blocks) NewChangeListVisibility(list *types.List, show bool) *ChangeLis
 
 		List: list,
 		Show: show,
+	}
+}
+
+// ListContains
+type ListContains struct {
+	*BasicBlock
+
+	List  *types.List
+	Value types.Value
+}
+
+func (l *ListContains) ScratchBlockVal() {}
+
+func (l *ListContains) Build() types.ScratchBlock {
+	return l.BasicBlock.Build("data_listcontainsitem", map[string]types.ScratchInput{
+		"ITEM": l.Value.Build(),
+	}, map[string]types.ScratchField{
+		"LIST": types.NewScratchValueFieldVariable(l.List.Name, l.List.ScratchID()),
+	})
+}
+
+func (b *Blocks) NewListContains(list *types.List, value types.Value) *ListContains {
+	return &ListContains{
+		BasicBlock: newBasicBlock(types.GetRandomString()),
+
+		List:  list,
+		Value: value,
 	}
 }

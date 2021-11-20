@@ -101,6 +101,10 @@ func NewScratchVariable(name, id string) ScratchValue {
 	return &scratchInputVal{12, name, id}
 }
 
+func NewScratchList(name, id string) ScratchValue {
+	return &scratchInputVal{13, name, id}
+}
+
 type ScratchField interface {
 	mustBeInputField()
 }

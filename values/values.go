@@ -62,7 +62,7 @@ func NewListValue(list *types.List) types.Value {
 }
 
 func (l *ListValue) Build() types.ScratchInput {
-	return types.NewScratchInputObscured(types.NewScratchVariable(l.List.Name, l.List.ScratchID()), types.NewScratchString(""))
+	return types.NewScratchInputObscured(types.NewScratchList(l.List.Name, l.List.ScratchID()), types.NewScratchString(""))
 }
 
 type BlockValue struct {

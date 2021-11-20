@@ -3,6 +3,8 @@ package scratch
 import (
 	"testing"
 
+	"github.com/Nv7-Github/scratch/blocks"
+	"github.com/Nv7-Github/scratch/types"
 	"github.com/Nv7-Github/scratch/values"
 )
 
@@ -41,9 +43,29 @@ func TestVariables(t *testing.T) {
 	stack.Add(Stage.NewChangeListVisibility(list, false))
 	stack.Add(Stage.NewChangeListVisibility(list, true))
 
-	// TODO: Variable values
-	// TODO: List values
-	// Do this by making a "demonstrate block" which has no code but accepts a value as input
+	// Show values
+	fn := Stage.NewFunction(blocks.NewFunctionParameterLabel("value"), blocks.NewFunctionParameterValue("value", blocks.FunctionParameterString, ""))
+	fn.Warp = true
+	fn.X = 1000
+	fn.Y = 1000
+	demonstrate := func(val types.Value) {
+		call, err := Stage.NewFunctionCall(fn, val)
+		if err != nil {
+			t.Fatal(err)
+		}
+		stack.Add(call)
+	}
+	demonstrateBlk := func(block blocks.BlockVal) {
+		stack.Add(block)
+		demonstrate(values.NewBlockValue(block))
+	}
+
+	demonstrate(values.NewVariableValue(variable))
+	demonstrate(values.NewListValue(list))
+	demonstrateBlk(Stage.NewItemOfList(list, values.NewIntValue(1)))
+	demonstrateBlk(Stage.NewFindInList(list, values.NewStringValue("This is a find in list block.")))
+	demonstrateBlk(Stage.NewLengthOfList(list))
+	demonstrateBlk(Stage.NewListContains(list, values.NewStringValue("This is a list contains block.")))
 
 	saveProject(t.Fatal, "testdata/Variables.sb3")
 }
