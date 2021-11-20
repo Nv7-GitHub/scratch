@@ -22,7 +22,7 @@ type ScratchMutation struct {
 	ArgumentIDs      string  `json:"argumentids"`      // []string, but marshal with JSON (use MarshalStringArray)
 	ArgumentNames    *string `json:"argumentnames"`    // []string, but marshal with JSON (use MarshalStringArray)
 	ArgumentDefaults string  `json:"argumentdefaults"` // []interface{}, but marshal each element with JSON into []string and then marshal that with JSON (use MarshalInterfaceArray)
-	Warp             bool    `json:"warp"`             // run without screen refresh?
+	Warp             string  `json:"warp"`             // run without screen refresh? (string of bool, with JSON)
 }
 
 type ScratchInput []interface{}

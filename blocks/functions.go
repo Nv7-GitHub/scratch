@@ -101,7 +101,7 @@ func (f *Function) Build() map[string]types.ScratchBlock {
 			ArgumentIDs:      types.MarshalStringArray(argIDs),
 			ArgumentNames:    &argNameVal,
 			ArgumentDefaults: types.MarshalInterfaceArray(argDefaults),
-			Warp:             f.Warp,
+			Warp:             types.MarshalBool(f.Warp),
 		},
 	}
 
@@ -192,7 +192,7 @@ func (f *FunctionCall) Build() types.ScratchBlock {
 		Children:    make([]bool, 0),
 		ProcCode:    f.function.procCode,
 		ArgumentIDs: types.MarshalStringArray(argumentIds),
-		Warp:        f.function.Warp,
+		Warp:        types.MarshalBool(f.function.Warp),
 	}
 	blk := f.BasicBlock.Build("procedures_call", inpMap, make(map[string]types.ScratchField))
 	blk.Mutation = &mutation
@@ -207,6 +207,7 @@ func (b *Blocks) NewFunctionCall(fn *Function, params ...types.Value) (*Function
 		BasicBlock: newBasicBlock(types.GetRandomString()),
 
 		function: fn,
+		params:   params,
 	}, nil
 }
 

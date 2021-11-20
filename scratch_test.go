@@ -94,12 +94,12 @@ func TestFunctions(t *testing.T) {
 	set := Stage.NewSetVariable(ret, values.NewBlockValue(op))
 	fn.Add(set)
 
-	/*stack := Stage.NewWhenFlagClicked()
+	stack := Stage.NewWhenFlagClicked()
 	call, err := Stage.NewFunctionCall(fn, values.NewIntValue(1), values.NewIntValue(2))
 	if err != nil {
 		t.Fatal(err)
 	}
-	stack.Add(call)*/
+	stack.Add(call)
 
 	saveProject(t.Fatal, "testdata/Functions.sb3")
 }

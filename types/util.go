@@ -21,3 +21,11 @@ func MarshalInterfaceArray(vals []interface{}) string {
 	}
 	return MarshalStringArray(data)
 }
+
+func MarshalBool(val bool) string {
+	v, err := json.Marshal(val)
+	if err != nil {
+		panic(err)
+	}
+	return string(v)
+}
