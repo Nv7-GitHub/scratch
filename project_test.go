@@ -18,7 +18,7 @@ func createProject(handler func(args ...interface{})) {
 
 	// Stack and hello world
 	stack := s.NewWhenFlagClicked()
-	say := s.NewSayForTimeBlock(values.NewStringValue("Hello, World!"), 0.5)
+	say := s.NewSayForTimeBlock(values.NewStringValue("Hello, World!"), values.NewFloatValue(0.5))
 	stack.Add(say)
 
 	s.SetComment(say, "Hello World Example")
@@ -43,7 +43,7 @@ func createProject(handler func(args ...interface{})) {
 	stack.Add(loop)
 
 	// Add contents of loop
-	say = s.NewSayForTimeBlock(values.NewVariableValue(iter), 0.25) // say(i)
+	say = s.NewSayForTimeBlock(values.NewVariableValue(iter), values.NewFloatValue(0.25)) // say(i)
 	loop.Add(say)
 
 	incr := s.NewChangeVariable(iter, values.NewIntValue(1)) // i++
