@@ -98,6 +98,10 @@ func createProject(handler func(args ...interface{})) {
 	waitConcurrent := s.NewWait(values.NewFloatValue(0.25))
 	concurrentLoop.Add(waitConcurrent)
 
+	// Stop
+	stop := s.NewStop(blocks.StopOptionAll)
+	stack.Add(stop)
+
 	saveProject(handler, "testdata/Project.sb3")
 }
 func TestProject(t *testing.T) {

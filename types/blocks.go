@@ -16,13 +16,14 @@ type ScratchBlock struct {
 }
 
 type ScratchMutation struct {
-	TagName          string  `json:"tagName"`          // always "mutation"
-	Children         []bool  `json:"children"`         // seems to be just an empty array
-	ProcCode         string  `json:"proccode"`         // name of block, has parameters in it like "add %s %s label %b" where %s is string/number and %b is boolean
-	ArgumentIDs      string  `json:"argumentids"`      // []string, but marshal with JSON (use MarshalStringArray)
-	ArgumentNames    *string `json:"argumentnames"`    // []string, but marshal with JSON (use MarshalStringArray)
-	ArgumentDefaults string  `json:"argumentdefaults"` // []interface{}, but marshal each element with JSON into []string and then marshal that with JSON (use MarshalInterfaceArray)
-	Warp             string  `json:"warp"`             // run without screen refresh? (string of bool, with JSON)
+	TagName          string  `json:"tagName"`                    // always "mutation"
+	Children         []bool  `json:"children"`                   // seems to be just an empty array
+	ProcCode         *string `json:"proccode,omitempty"`         // name of block, has parameters in it like "add %s %s label %b" where %s is string/number and %b is boolean
+	ArgumentIDs      *string `json:"argumentids,omitempty"`      // []string, but marshal with JSON (use MarshalStringArray)
+	ArgumentNames    *string `json:"argumentnames,omitempty"`    // []string, but marshal with JSON (use MarshalStringArray)
+	ArgumentDefaults *string `json:"argumentdefaults,omitempty"` // []interface{}, but marshal each element with JSON into []string and then marshal that with JSON (use MarshalInterfaceArray)
+	Warp             *string `json:"warp,omitempty"`             // run without screen refresh? (string of bool, with JSON)
+	HasNext          *string `json:"hasnext,omitempty"`          // bool, marshal into JSON
 }
 
 type ScratchInput []interface{}
@@ -121,6 +122,6 @@ func NewScratchFieldBroadcast(name, id string) ScratchField {
 	return &scratchInputField{name, id}
 }
 
-func NewScratchFieldParamName(name string) ScratchField {
-	return &scratchInputField{name, nil}
+func NewScratchFieldString(val string) ScratchField {
+	return &scratchInputField{val, nil}
 }

@@ -86,6 +86,9 @@ func (f *Function) Build() map[string]types.ScratchBlock {
 	}
 
 	argNameVal := types.MarshalStringArray(argNames)
+	argIDsVal := types.MarshalStringArray(argIDs)
+	argDefaultsVal := types.MarshalInterfaceArray(argDefaults)
+	warpV := types.MarshalBool(f.Warp)
 	stack[customBlkId] = types.ScratchBlock{
 		Opcode:   "procedures_prototype",
 		Next:     nil,
@@ -97,11 +100,11 @@ func (f *Function) Build() map[string]types.ScratchBlock {
 		Mutation: &types.ScratchMutation{
 			TagName:          "mutation",
 			Children:         make([]bool, 0),
-			ProcCode:         f.procCode,
-			ArgumentIDs:      types.MarshalStringArray(argIDs),
+			ProcCode:         &f.procCode,
+			ArgumentIDs:      &argIDsVal,
 			ArgumentNames:    &argNameVal,
-			ArgumentDefaults: types.MarshalInterfaceArray(argDefaults),
-			Warp:             types.MarshalBool(f.Warp),
+			ArgumentDefaults: &argDefaultsVal,
+			Warp:             &warpV,
 		},
 	}
 
@@ -117,7 +120,7 @@ func (f *Function) Build() map[string]types.ScratchBlock {
 			Parent: &customBlkId,
 			Inputs: make(map[string]types.ScratchInput),
 			Fields: map[string]types.ScratchField{
-				"VALUE": types.NewScratchFieldParamName(parTyp.name),
+				"VALUE": types.NewScratchFieldString(parTyp.name),
 			},
 			Shadow:   true,
 			TopLevel: false,
@@ -187,12 +190,14 @@ func (f *FunctionCall) Build() types.ScratchBlock {
 		argumentIds[i] = f.function.paramTypes[i].keyId
 	}
 
+	argumentIdsVal := types.MarshalStringArray(argumentIds)
+	warpVal := types.MarshalBool(f.function.Warp)
 	mutation := types.ScratchMutation{
 		TagName:     "mutation",
 		Children:    make([]bool, 0),
-		ProcCode:    f.function.procCode,
-		ArgumentIDs: types.MarshalStringArray(argumentIds),
-		Warp:        types.MarshalBool(f.function.Warp),
+		ProcCode:    &f.function.procCode,
+		ArgumentIDs: &argumentIdsVal,
+		Warp:        &warpVal,
 	}
 	blk := f.BasicBlock.Build("procedures_call", inpMap, make(map[string]types.ScratchField))
 	blk.Mutation = &mutation

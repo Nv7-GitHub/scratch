@@ -69,3 +69,43 @@ func (b *Blocks) NewResetTimer() *ResetTimer {
 		BasicBlock: newBasicBlock(types.GetRandomString()),
 	}
 }
+
+type StopOption int
+
+const (
+	StopOptionAll StopOption = iota
+	StopOptionThisScript
+	StopOptionOtherScripts
+)
+
+var optionNames = map[StopOption]string{
+	StopOptionAll:          "all",
+	StopOptionThisScript:   "this script",
+	StopOptionOtherScripts: "other scripts in sprite",
+}
+
+type Stop struct {
+	*BasicBlock
+
+	Option StopOption
+}
+
+func (s *Stop) Build() types.ScratchBlock {
+	blk := s.BasicBlock.Build("control_stop", make(map[string]types.ScratchInput), map[string]types.ScratchField{
+		"STOP_OPTION": types.NewScratchFieldString(optionNames[s.Option]),
+	})
+	mut := types.MarshalBool(false)
+	blk.Mutation = &types.ScratchMutation{
+		TagName:  "mutation",
+		Children: make([]bool, 0),
+		HasNext:  &mut,
+	}
+	return blk
+}
+
+func (b *Blocks) NewStop(option StopOption) *Stop {
+	return &Stop{
+		BasicBlock: newBasicBlock(types.GetRandomString()),
+		Option:     option,
+	}
+}
