@@ -6,10 +6,10 @@ type Repeat struct {
 	*BasicBlock
 	*Mouth
 
-	Times int
+	Times types.Value
 }
 
-func (b *Blocks) NewRepeat(times int) *Repeat {
+func (b *Blocks) NewRepeat(times types.Value) *Repeat {
 	return &Repeat{
 		BasicBlock: newBasicBlock(types.GetRandomString()),
 		Mouth:      newMouth(),
@@ -18,18 +18,10 @@ func (b *Blocks) NewRepeat(times int) *Repeat {
 }
 
 func (r *Repeat) Build() map[string]types.ScratchBlock {
-	blk := types.ScratchBlock{
-		Opcode: "control_repeat",
-		Next:   r.next,
-		Parent: r.prev,
-		Inputs: map[string]types.ScratchInput{
-			"TIMES":    types.NewScratchInputShadow(types.NewScratchInt(r.Times)),
-			"SUBSTACK": types.NewScratchInputNoShadow(r.Blocks[0].ScratchID()),
-		},
-		Fields:   make(map[string]types.ScratchField),
-		Shadow:   false,
-		TopLevel: false,
-	}
+	blk := r.BasicBlock.Build("control_repeat", map[string]types.ScratchInput{
+		"TIMES":    r.Times.Build(),
+		"SUBSTACK": types.NewScratchInputNoShadow(r.Blocks[0].ScratchID()),
+	}, make(map[string]types.ScratchField))
 	return r.Mouth.Build(blk, r.ScratchID())
 }
 
@@ -49,17 +41,9 @@ func (b *Blocks) NewRepeatUntil(cond types.Value) *RepeatUntil {
 }
 
 func (r *RepeatUntil) Build() map[string]types.ScratchBlock {
-	blk := types.ScratchBlock{
-		Opcode: "control_repeat_until",
-		Next:   r.next,
-		Parent: r.prev,
-		Inputs: map[string]types.ScratchInput{
-			"CONDITION": r.Condition.Build(),
-			"SUBSTACK":  types.NewScratchInputNoShadow(r.Blocks[0].ScratchID()),
-		},
-		Fields:   make(map[string]types.ScratchField),
-		Shadow:   false,
-		TopLevel: false,
-	}
+	blk := r.BasicBlock.Build("control_repeat_until", map[string]types.ScratchInput{
+		"CONDITION": r.Condition.Build(),
+		"SUBSTACK":  types.NewScratchInputNoShadow(r.Blocks[0].ScratchID()),
+	}, make(map[string]types.ScratchField))
 	return r.Mouth.Build(blk, r.ScratchID())
 }

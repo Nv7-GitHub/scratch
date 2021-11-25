@@ -98,9 +98,14 @@ func createProject(handler func(args ...interface{})) {
 	waitConcurrent := s.NewWait(values.NewFloatValue(0.25))
 	concurrentLoop.Add(waitConcurrent)
 
-	// Stop
-	stop := s.NewStop(blocks.StopOptionAll)
-	stack.Add(stop)
+	// IfElse
+	cond := s.NewCompare(values.NewIntValue(1), values.NewIntValue(1), blocks.CompareEqual)
+	stack.Add(cond)
+	blk := s.NewIfElse(values.NewBlockValue(cond))
+	stack.Add(blk)
+
+	blk.Add(s.NewSayBlock(values.NewStringValue("Hello, World!")))
+	blk.Else.Add(s.NewSayBlock(values.NewStringValue("Goodbye, World!")))
 
 	saveProject(handler, "testdata/Project.sb3")
 }
