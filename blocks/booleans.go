@@ -70,3 +70,42 @@ func (n *Not) Build() types.ScratchBlock {
 		TopLevel: false,
 	}
 }
+
+type LogicalOp int
+
+const (
+	LogicalOpAnd LogicalOp = iota
+	LogicalOpOr
+)
+
+var logicalOpNames = map[LogicalOp]string{
+	LogicalOpAnd: "operator_and",
+	LogicalOpOr:  "operator_or",
+}
+
+type LogicalOperation struct {
+	*BasicBlock
+
+	Op   LogicalOp
+	Val1 types.Value
+	Val2 types.Value
+}
+
+func (l *LogicalOperation) ScratchBlockVal() {}
+
+func (l *LogicalOperation) Build() types.ScratchBlock {
+	return l.BasicBlock.Build(logicalOpNames[l.Op], map[string]types.ScratchInput{
+		"OPERAND1": l.Val1.Build(),
+		"OPERAND2": l.Val2.Build(),
+	}, make(map[string]types.ScratchField))
+}
+
+func (b *Blocks) NewLogicalOperation(val1, val2 types.Value, op LogicalOp) *LogicalOperation {
+	return &LogicalOperation{
+		BasicBlock: newBasicBlock(types.GetRandomString()),
+
+		Op:   op,
+		Val1: val1,
+		Val2: val2,
+	}
+}
