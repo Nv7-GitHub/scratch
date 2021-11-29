@@ -107,6 +107,10 @@ func createProject(handler func(args ...interface{})) {
 	blk.Add(s.NewSayBlock(values.NewStringValue("Hello, World!")))
 	blk.Else.Add(s.NewSayBlock(values.NewStringValue("Goodbye, World!")))
 
+	repeat := s.NewRepeat(values.NewIntValue(3))
+	stack.Add(repeat)
+	repeat.Add(s.NewSayBlock(values.NewStringValue("Hello, World!")))
+
 	saveProject(handler, "testdata/Project.sb3")
 }
 func TestProject(t *testing.T) {

@@ -3,7 +3,8 @@ package blocks
 import "github.com/Nv7-Github/scratch/types"
 
 type Mouth struct {
-	Blocks []Block
+	Blocks    []Block
+	BlockVals []Block
 }
 
 func newMouth() *Mouth {
@@ -11,7 +12,12 @@ func newMouth() *Mouth {
 }
 
 func (m *Mouth) Add(block Block) {
-	m.Blocks = append(m.Blocks, block)
+	_, ok := block.(BlockVal)
+	if ok {
+		m.BlockVals = append(m.BlockVals, block)
+	} else {
+		m.Blocks = append(m.Blocks, block)
+	}
 }
 
 func (m *Mouth) Build(top types.ScratchBlock, topid string) map[string]types.ScratchBlock {
@@ -38,5 +44,8 @@ func (m *Mouth) Build(top types.ScratchBlock, topid string) map[string]types.Scr
 		}
 	}
 	out[topid] = top
+	for _, val := range m.BlockVals {
+		out[val.ScratchID()] = val.(SimpleBlock).Build()
+	}
 	return out
 }
